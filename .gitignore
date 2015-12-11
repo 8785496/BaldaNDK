@@ -1,0 +1,17 @@
+# Created by .ignore support plugin (hsz.mobi)
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+/app/build
+/gradle
+/.idea
+/.google
+/screenshot.png
+/gradlew
+/gradlew.bat
+/BaldaNDK.iml
+/app/app.iml
