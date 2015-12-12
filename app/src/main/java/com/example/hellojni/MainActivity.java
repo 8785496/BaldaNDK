@@ -5,16 +5,12 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import static java.util.Arrays.*;
 
 public class MainActivity extends Activity {
     private String chars = " абвгдежзийклмнопрстуфхцчшщъыьэюя";
@@ -25,6 +21,11 @@ public class MainActivity extends Activity {
     private ArrayList<Integer> coordinates = new ArrayList<>();
     private boolean boolTrack = false;
     int insertCharIndex = -1;
+
+    static {
+        System.loadLibrary("hello-jni");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,10 +43,6 @@ public class MainActivity extends Activity {
             0, 0, 0, 0, 0
         };
         refresh();
-    }
-
-    static {
-        System.loadLibrary("hello-jni");
     }
 
     private native void nativDicInit(Object obj);
@@ -109,7 +106,7 @@ public class MainActivity extends Activity {
         nativTrackIter(_space);
         //nativTrackIter(space);
         timeout = System.currentTimeMillis() - timeout;
-        Log.d("BaldaNDk", "time  = " + String.valueOf(timeout));
+        Log.d("BaldaNDK", "time  = " + String.valueOf(timeout));
     }
 
     public void getWord(View view) {
@@ -238,7 +235,7 @@ public class MainActivity extends Activity {
                         (i > 5 && space[i - 5] != 0) ||
                         (i % 5 < 4 && space[i + 1] != 0) ||
                         (i % 5 > 0 && space[i - 1] != 0)) {
-                    Intent intent = new Intent(MainActivity.this, Main2Activity.class);
+                    Intent intent = new Intent(MainActivity.this, KeyboardActivity.class);
                     startActivityForResult(intent, requestCode);
                 }
             }
@@ -337,9 +334,9 @@ public class MainActivity extends Activity {
             }
             String word = String.valueOf(wordChars);
             if (!coordinates.contains(insertCharIndex)) {
-                Log.d("BaldaNDK", "Слово не содержит добавленную букву");
+                notification("Слово не содержит добавленную букву");
             } else if (wordsAll.contains(word)) {
-                Log.d("BaldaNDK", "Слово уже использовано");
+                notification("Слово уже использовано");
             } else if (nativFindWord(bytes)) {
                 boolTrack = false;
                 insertCharIndex = -1;
@@ -349,10 +346,10 @@ public class MainActivity extends Activity {
                 trackIter(view);
                 getWord(view);
             } else {
-                Log.d("BaldaNDK", "Слово не найдено");
+                notification("Слово не найдено");
             }
         } else {
-            Log.d("BaldaNDK", "Выберете слово");
+            notification("Выберете слово");
         }
         refresh();
     }
@@ -365,6 +362,11 @@ public class MainActivity extends Activity {
             insertCharIndex = -1;
         }
         refresh();
+    }
+
+    private void notification(String text) {
+        Log.d("BaldaNDK", text);
+
     }
 
 }

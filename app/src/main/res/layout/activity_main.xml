@@ -22,10 +22,9 @@
         android:layout_height="wrap_content"
         android:text="Cancel"
         android:id="@+id/btnCancel"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/button4"
-        android:layout_toEndOf="@+id/button4"
-        android:onClick="cancel" />
+        android:onClick="cancel"
+        android:layout_above="@+id/tableLayout"
+        android:layout_alignEnd="@+id/tableLayout" />
 
     <TableLayout  xmlns:android = "http://schemas.android.com/apk/res/android"
         android:layout_width = "match_parent"
@@ -261,7 +260,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        android:text="1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
         android:id="@+id/txtPlayer"
         android:layout_below="@+id/textView2"
         android:layout_alignParentLeft="true"
@@ -271,21 +270,31 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        android:text="1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
         android:id="@+id/txtAndroid"
         android:layout_alignTop="@+id/txtPlayer"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:width="140dp" />
+        android:width="140dp"
+        android:textIsSelectable="false"
+        android:gravity="right" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Status"
         android:id="@+id/txtStatus"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignBaseline="@+id/button4"
+        android:layout_alignBottom="@+id/button4"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/textView"
+        android:layout_below="@+id/tableLayout"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.example.hellojni;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,16 @@ public class StartActivity extends Activity {
     public void getTranslate(View view) {
         EditText editText = (EditText) findViewById(R.id.editText);
         new ParseTask().execute(editText.getText().toString());
+    }
+
+    public void startRussian(View view) {
+        Intent intent = new Intent(StartActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void startEnglish(View view) {
+        Intent intent = new Intent(StartActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
     private class ParseTask extends AsyncTask<String, Void, String> {
