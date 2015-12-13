@@ -40,11 +40,13 @@ public class StartActivity extends Activity {
 
     public void startRussian(View view) {
         Intent intent = new Intent(StartActivity.this, MainActivity.class);
+        intent.putExtra("lang", 0);
         startActivity(intent);
     }
 
     public void startEnglish(View view) {
         Intent intent = new Intent(StartActivity.this, MainActivity.class);
+        intent.putExtra("lang", 1);
         startActivity(intent);
     }
 

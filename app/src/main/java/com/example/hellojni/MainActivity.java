@@ -22,6 +22,7 @@ public class MainActivity extends Activity {
     private ArrayList<Integer> coordinates = new ArrayList<>();
     private boolean boolTrack = false;
     int insertCharIndex = -1;
+    int lang;
 
     static {
         System.loadLibrary("hello-jni");
@@ -32,22 +33,35 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //chars = " абвгдежзийклмнопрстуфхцчшщъыьэюя";
-        chars = " abcdefghijklmnopqrstuvwxyz";
+        Intent intent = getIntent();
+        lang = intent.getIntExtra("lang", 0);
+
+        if (lang == 1) {
+            chars = " abcdefghijklmnopqrstuvwxyz";
+            wordsAll.add("panda");
+            space = new byte[] {
+                    0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0,
+                    16, 1, 14, 4, 1,
+                    0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0
+            };
+        } else {
+            chars = " абвгдежзийклмнопрстуфхцчшщъыьэюя";
+            wordsAll.add("балда");
+            space = new byte[] {
+                    0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0,
+                    2, 1, 12, 5, 1,
+                    0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0
+            };
+        }
 
         AssetManager myAssetManager = getResources().getAssets();
         nativDicInit(myAssetManager);
-        //wordsAll.add("балда");
-        wordsAll.add("panda");
 
-        space = new byte[] {
-            0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0,
-            //2, 1, 12, 5, 1,
-            16, 1, 14, 4, 1,
-            0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0
-        };
+
         refresh();
     }
 
@@ -242,6 +256,7 @@ public class MainActivity extends Activity {
                         (i % 5 < 4 && space[i + 1] != 0) ||
                         (i % 5 > 0 && space[i - 1] != 0)) {
                     Intent intent = new Intent(MainActivity.this, KeyboardActivity.class);
+                    intent.putExtra("lang", lang);
                     startActivityForResult(intent, requestCode);
                 }
             }
