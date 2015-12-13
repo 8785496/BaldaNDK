@@ -19,7 +19,8 @@ void Dic::init(JNIEnv * env, jobject assetManager) {
     if (mgr == NULL) {
         __android_log_print(ANDROID_LOG_ERROR, "BaldaNDK", "error loading asset maanger");
     }
-    AAsset * asset = AAssetManager_open(mgr, "data.bin", AASSET_MODE_STREAMING);
+    //AAsset * asset = AAssetManager_open(mgr, "data.bin", AASSET_MODE_STREAMING);
+    AAsset * asset = AAssetManager_open(mgr, "data_en.bin", AASSET_MODE_STREAMING);
     if (asset == NULL) {
         __android_log_print(ANDROID_LOG_ERROR, "BaldaNDK", "error loading file");
     } else {

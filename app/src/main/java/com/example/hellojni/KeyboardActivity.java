@@ -9,7 +9,8 @@ public class KeyboardActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_keyboard);
+        //setContentView(R.layout.activity_keyboard);
+        setContentView(R.layout.activity_keyboard_en);
     }
 
     public void sendResult (View view) {

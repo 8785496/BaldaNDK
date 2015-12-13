@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MainActivity extends Activity {
-    private String chars = " абвгдежзийклмнопрстуфхцчшщъыьэюя";
+    //private String chars = " абвгдежзийклмнопрстуфхцчшщъыьэюя";
+    private String chars;
     private byte[] space;
     private ArrayList<String> wordsAll = new ArrayList<>();
     private ArrayList<String> wordsAndroid = new ArrayList<>();
@@ -31,14 +32,19 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //chars = " абвгдежзийклмнопрстуфхцчшщъыьэюя";
+        chars = " abcdefghijklmnopqrstuvwxyz";
+
         AssetManager myAssetManager = getResources().getAssets();
         nativDicInit(myAssetManager);
-        wordsAll.add("балда");
+        //wordsAll.add("балда");
+        wordsAll.add("panda");
 
         space = new byte[] {
             0, 0, 0, 0, 0,
             0, 0, 0, 0, 0,
-            2, 1, 12, 5, 1,
+            //2, 1, 12, 5, 1,
+            16, 1, 14, 4, 1,
             0, 0, 0, 0, 0,
             0, 0, 0, 0, 0
         };

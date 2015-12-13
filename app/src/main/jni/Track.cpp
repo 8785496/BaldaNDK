@@ -4,7 +4,6 @@
 #include <android/log.h>
 #include "Track.h"
 
-
 Track::Track() {
 }
 
