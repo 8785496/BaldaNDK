@@ -4,7 +4,7 @@ class Dic
 public:
     Dic();
     virtual ~Dic();
-    void init(JNIEnv*, jobject);
+    void init(JNIEnv*, jobject, jint);
     bool findWord(int, unsigned char *);
     bool findPart(int chars_len, unsigned char * chars);
     long long charsToHash(int chars_len, unsigned char * chars);

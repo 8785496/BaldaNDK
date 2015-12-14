@@ -38,11 +38,11 @@ JNIEXPORT jlong JNICALL Java_com_example_hellojni_HelloJni_stringFromJNI
 };
 
 JNIEXPORT void JNICALL Java_com_example_hellojni_MainActivity_nativDicInit
-        (JNIEnv * env, jobject obj, jobject assetManager)
+        (JNIEnv * env, jobject obj, jobject assetManager, jint lang)
 {
     //Dic * dic = new Dic(env, assetManager);
     //dic.init(env, assetManager);
-    track.initDic(env, assetManager);
+    track.initDic(env, assetManager, lang);
 };
 
 JNIEXPORT jboolean JNICALL Java_com_example_hellojni_MainActivity_nativFindWord

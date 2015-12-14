@@ -18,8 +18,8 @@ void Track::init(long long * hashWords, int hashWords_len) {
     //__android_log_print(ANDROID_LOG_ERROR, "BaldaNDK", "Track Init");
 }
 
-void Track::initDic(JNIEnv * env, jobject assetManager) {
-    dic.init(env, assetManager);
+void Track::initDic(JNIEnv * env, jobject assetManager, jint lang) {
+    dic.init(env, assetManager, lang);
 }
 
 void Track::findTrack(unsigned char * arrData, int * coordinatesWord, int coordinatesWord_len, int cur, int ins) {

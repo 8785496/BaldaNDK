@@ -9,7 +9,7 @@ public:
     Track();
     virtual ~Track();
     void init(long long * hashWords, int hashWords_len);
-    void initDic(JNIEnv *env, jobject assetManager);
+    void initDic(JNIEnv *env, jobject assetManager, jint lang);
     void findTrack(unsigned char * arrData, int * coordinatesWord, int coordinatesWord_len, int cur, int ins);
     void iter(unsigned char * arr, int arr_len);
     long long getWord();

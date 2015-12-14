@@ -59,13 +59,13 @@ public class MainActivity extends Activity {
         }
 
         AssetManager myAssetManager = getResources().getAssets();
-        nativDicInit(myAssetManager);
+        nativDicInit(myAssetManager, lang);
 
 
         refresh();
     }
 
-    private native void nativDicInit(Object obj);
+    private native void nativDicInit(Object obj, int lang);
 
     private native void nativTrackInit(long[] hashWords);
 

@@ -14,13 +14,17 @@ using namespace std;
 
 Dic::Dic(){}
 
-void Dic::init(JNIEnv * env, jobject assetManager) {
+void Dic::init(JNIEnv * env, jobject assetManager, jint lang) {
     AAssetManager * mgr = AAssetManager_fromJava(env, assetManager);
     if (mgr == NULL) {
         __android_log_print(ANDROID_LOG_ERROR, "BaldaNDK", "error loading asset maanger");
     }
-    //AAsset * asset = AAssetManager_open(mgr, "data.bin", AASSET_MODE_STREAMING);
-    AAsset * asset = AAssetManager_open(mgr, "data_en.bin", AASSET_MODE_STREAMING);
+    AAsset * asset;
+    if (lang == 1) {
+        asset = AAssetManager_open(mgr, "data_en.bin", AASSET_MODE_STREAMING);
+    } else {
+        asset = AAssetManager_open(mgr, "data.bin", AASSET_MODE_STREAMING);
+    }
     if (asset == NULL) {
         __android_log_print(ANDROID_LOG_ERROR, "BaldaNDK", "error loading file");
     } else {
