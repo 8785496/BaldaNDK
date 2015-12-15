@@ -8,6 +8,9 @@
 extern "C" {
 #endif
 
+JNIEXPORT void JNICALL Java_com_example_hellojni_MainActivity_nativDestruct
+        (JNIEnv *, jobject);
+
 JNIEXPORT void JNICALL Java_com_example_hellojni_MainActivity_nativDicInit
         (JNIEnv *, jobject, jobject, jint);
 

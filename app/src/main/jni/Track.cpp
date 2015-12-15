@@ -3,11 +3,13 @@
 #include <jni.h>
 #include <android/log.h>
 #include "Track.h"
+#include "Dic.h"
 
 Track::Track() {
 }
 
 Track::~Track() {
+    //dic.~Dic();
 }
 
 void Track::init(long long * hashWords, int hashWords_len) {

@@ -148,3 +148,8 @@ jboolean Java_com_example_hellojni_MainActivity_nativFindWord
 
     return result;
 }
+
+void Java_com_example_hellojni_MainActivity_nativDestruct
+        (JNIEnv *env, jobject obj) {
+    track.~Track();
+}

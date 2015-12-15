@@ -65,6 +65,19 @@ public class MainActivity extends Activity {
         refresh();
     }
 
+//    @Override
+//    protected void onDestroy() {
+//
+//    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        nativDestruct();
+    }
+
+    private native void nativDestruct();
+
     private native void nativDicInit(Object obj, int lang);
 
     private native void nativTrackInit(long[] hashWords);

@@ -99,6 +99,16 @@ void Dic::init(JNIEnv * env, jobject assetManager, jint lang) {
 }
 
 Dic::~Dic() {
+    delete [] dictionary;
+    delete [] dic2_more;
+    delete [] dic3_more;
+    delete [] dic4_more;
+    delete [] dic5_more;
+    delete [] dic6_more;
+    delete [] dic7_more;
+    delete [] dic8_more;
+    delete [] dic9_more;
+    __android_log_print(ANDROID_LOG_ERROR, "BaldaNDK", "~Dic()");
 }
 
 long long Dic::charsToHash(int chars_len, unsigned char *chars) {
