@@ -65,14 +65,9 @@ public class MainActivity extends Activity {
         refresh();
     }
 
-//    @Override
-//    protected void onDestroy() {
-//
-//    }
-
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         nativDestruct();
     }
 
