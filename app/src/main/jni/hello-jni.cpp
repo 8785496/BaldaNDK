@@ -13,30 +13,6 @@ Track track;
 
 #include <string>
 
-JNIEXPORT jlong JNICALL Java_com_example_hellojni_HelloJni_stringFromJNI
-        (JNIEnv * env, jobject obj, jobject assetManager)
-{
-    AAssetManager * mgr = AAssetManager_fromJava(env, assetManager);
-    if (mgr == NULL) {
-        __android_log_print(ANDROID_LOG_ERROR, "BaldaNDK", "error loading asset maanger");
-        return 0;
-    }
-    AAsset * asset = AAssetManager_open(mgr, "file.txt", AASSET_MODE_STREAMING);
-    if (asset == NULL) {
-        __android_log_print(ANDROID_LOG_ERROR, "BaldaNDK", "error loading file");
-        return 0;
-    } else {
-        //long long * longTemp = new jlong[1];
-        long long longTemp;
-
-        AAsset_read (asset, &longTemp, sizeof(long long));
-        AAsset_read (asset, &longTemp, sizeof(long long));
-        AAsset_close(asset);
-
-        return longTemp;
-    }
-};
-
 JNIEXPORT void JNICALL Java_com_example_hellojni_MainActivity_nativDicInit
         (JNIEnv * env, jobject obj, jobject assetManager, jint lang)
 {

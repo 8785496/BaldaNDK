@@ -3,6 +3,7 @@ package com.example.hellojni;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -69,6 +70,17 @@ public class MainActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         nativDestruct();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Проверяем ориентацию экрана
+//        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+//        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+//            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+//        }
     }
 
     private native void nativDestruct();
@@ -253,8 +265,8 @@ public class MainActivity extends Activity {
                 char[] buffer = new char[n];
                 for(int i = 0; i < n; i++)
                     buffer[i] = chars.charAt(space[coordinates.get(i)]);
-                TextView textView = (TextView) findViewById(R.id.txtStatus);
-                textView.setText(buffer, 0, buffer.length);
+                TextView txtWord = (TextView) findViewById(R.id.txtWord);
+                txtWord.setText(buffer, 0, buffer.length);
             }
         } else {
             if (space[requestCode] == 0) {
@@ -344,12 +356,27 @@ public class MainActivity extends Activity {
         btn = (Button) findViewById(R.id.button_24);
         btn.setText(String.valueOf(chars.charAt(space[24])));
 
-        TextView textView;
-        textView = (TextView) findViewById(R.id.txtPlayer);
-        textView.setText(wordsUser.toString());
+        TextView txtPlayer = (TextView) findViewById(R.id.txtPlayer);
+        TextView txtScorePlayer = (TextView) findViewById(R.id.txtScorePlayer);
+        String strWordsPlayer = "";
+        int scorePlayer = 0;
+        for (String word : wordsUser) {
+            strWordsPlayer += word + "\n";
+            scorePlayer += word.length();
+        }
+        txtPlayer.setText(strWordsPlayer);
+        txtScorePlayer.setText("Player: " + String.valueOf(scorePlayer));
 
-        textView = (TextView) findViewById(R.id.txtAndroid);
-        textView.setText(wordsAndroid.toString());
+        TextView txtAndroid = (TextView) findViewById(R.id.txtAndroid);
+        TextView txtScoreAndroid = (TextView) findViewById(R.id.txtScoreAndroid);
+        String strWordsAndroid = "";
+        int scoreAndroid = 0;
+        for (String word : wordsAndroid) {
+            strWordsAndroid += word + "\n";
+            scoreAndroid += word.length();
+        }
+        txtAndroid.setText(strWordsAndroid);
+        txtScoreAndroid.setText("Android: " + String.valueOf(scoreAndroid));
     }
 
     public void step(View view) {
@@ -390,12 +417,17 @@ public class MainActivity extends Activity {
             space[insertCharIndex] = 0;
             insertCharIndex = -1;
         }
+        TextView txtWord = (TextView) findViewById(R.id.txtWord);
+        txtWord.setText("");
+        TextView textView = (TextView) findViewById(R.id.textView);
+        textView.setText("");
         refresh();
     }
 
     private void notification(String text) {
         Log.d("BaldaNDK", text);
-
+        TextView textView = (TextView) findViewById(R.id.textView);
+        textView.setText(text);
     }
 
 }

@@ -8,8 +8,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,10 +31,20 @@ public class StartActivity extends Activity {
 
     public static String LOG_TAG = "my_log";
 
+    String[] data = {"2", "3", "4", "5", "6", "7", "8", "9", "10"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+        // адаптер
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, data);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setAdapter(adapter);
+        spinner.setSelection(3);
     }
 
     public void getTranslate(View view) {
