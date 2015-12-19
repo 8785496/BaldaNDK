@@ -74,14 +74,16 @@ public class StartActivity extends Activity {
         protected String doInBackground(String... params) {
             // получаем данные с внешнего ресурса
             try {
-                String key = "dict.1.1.20151211T161559Z.76ec6129fecd755b.447faf7495f92ff3f651ec3928e36d8cbacefb23";
-                String word = URLEncoder.encode(params[0], "UTF-8"); //"time";
-                URL url = new URL("https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=" + key + "&lang=ru-ru&text=" + word);
+//                String key = "dict.1.1.20151211T161559Z.76ec6129fecd755b.447faf7495f92ff3f651ec3928e36d8cbacefb23";
+//                String word = URLEncoder.encode(params[0], "UTF-8"); //"time";
+//                URL url = new URL("https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=" + key + "&lang=ru-ru&text=" + word);
+                URL url = new URL("http://chernyshov.hol.es/record");
 
                 urlConnection = (HttpURLConnection) url.openConnection();
 
 
-                urlConnection.setRequestMethod("GET");
+                urlConnection.setRequestMethod("POST");
+                //urlConnection.getOutputStream()
                 urlConnection.connect();
 
                 InputStream inputStream = urlConnection.getInputStream();

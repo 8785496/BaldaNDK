@@ -24,6 +24,8 @@ public class MainActivity extends Activity {
     private boolean boolTrack = false;
     int insertCharIndex = -1;
     int lang;
+    int scorePlayer;
+    int scoreAndroid;
 
     static {
         System.loadLibrary("hello-jni");
@@ -401,6 +403,15 @@ public class MainActivity extends Activity {
                 trackInit(view);
                 trackIter(view);
                 getWord(view);
+                if (!endGame()) {
+                    notification("End game!");
+                    Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+                    intent.putExtra("scorePlayer", getScorePlayer());
+                    intent.putExtra("scoreAndroid", getScoreAndroid());
+                    //intent.putExtra("lang", 1);
+                    startActivity(intent);
+                    finish();
+                }
             } else {
                 notification("Слово не найдено");
             }
@@ -430,4 +441,27 @@ public class MainActivity extends Activity {
         textView.setText(text);
     }
 
+    private boolean endGame(){
+        for (byte c: space){
+            if (c == 0)
+                return false;
+        }
+        return true;
+    }
+
+    private int getScorePlayer(){
+        int scorePlayer = 0;
+        for (String word : wordsUser) {
+            scorePlayer += word.length();
+        }
+        return scorePlayer;
+    }
+
+    private int getScoreAndroid(){
+        int scoreAndroid = 0;
+        for (String word : wordsAndroid) {
+            scoreAndroid += word.length();
+        }
+        return scoreAndroid;
+    }
 }

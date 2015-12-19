@@ -13,8 +13,8 @@ model {
     }
 
     compileOptions.with {
-        sourceCompatibility=JavaVersion.VERSION_1_7
-        targetCompatibility=JavaVersion.VERSION_1_7
+        sourceCompatibility = JavaVersion.VERSION_1_7
+        targetCompatibility = JavaVersion.VERSION_1_7
     }
 
     /*
@@ -22,8 +22,8 @@ model {
      */
     android.ndk {
         moduleName = "hello-jni"
-        ldLibs    = ["android", "log"]
-        stl       = "stlport_static"
+        ldLibs = ["android", "log"]
+        stl = "stlport_static"
         /*
          * Other ndk flags configurable here are
          * cppFlags += "-fno-rtti"
@@ -35,7 +35,7 @@ model {
     android.buildTypes {
         release {
             minifyEnabled = false
-            proguardFiles  += file('proguard-rules.txt')
+            proguardFiles += file('proguard-rules.txt')
         }
     }
     android.productFlavors {
@@ -65,4 +65,7 @@ model {
         // To include all cpu architectures, leaves abiFilters empty
         create("all")
     }
+}
+dependencies {
+    compile 'com.android.support:appcompat-v7:23.1.1'
 }

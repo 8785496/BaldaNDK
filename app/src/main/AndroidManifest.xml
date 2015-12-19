@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.hellojni"
     android:versionCode="1"
-    android:versionName="1.0">
+    android:versionName="1.0" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,27 +11,31 @@
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name" >
-
         <activity
             android:name=".StartActivity"
             android:label="@string/title_activity_start" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_main"
-            android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
-            android:configChanges="keyboardHidden|orientation|screenSize">
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar" >
         </activity>
         <activity
             android:name=".KeyboardActivity"
-            android:label="@string/title_activity_main2"
-            android:theme="@android:style/Theme.DeviceDefault.Dialog.NoActionBar">
+            android:theme="@android:style/Theme.DeviceDefault.Dialog.NoActionBar" >
         </activity>
-
+        <activity
+            android:name=".ResultActivity"
+            android:label="@string/title_activity_result" >
+        </activity>
+        <activity android:name=".RegisterActivity" >
+        </activity>
     </application>
 
 </manifest>
