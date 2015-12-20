@@ -1,8 +1,7 @@
-package com.example.hellojni;
+package es.hol.chernyshov.balda;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;

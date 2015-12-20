@@ -1,4 +1,4 @@
-package com.example.hellojni;
+package es.hol.chernyshov.balda;
 
 import android.app.Activity;
 //import android.support.v7.app.AppCompatActivity;
@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;

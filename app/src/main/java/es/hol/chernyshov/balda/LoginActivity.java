@@ -1,4 +1,4 @@
-package com.example.hellojni;
+package es.hol.chernyshov.balda;
 
 import android.app.Activity;
 import android.os.Bundle;

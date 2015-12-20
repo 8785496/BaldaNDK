@@ -1,4 +1,4 @@
-package com.example.hellojni;
+package es.hol.chernyshov.balda;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,14 +9,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,7 +25,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 
 public class StartActivity extends Activity {
     String[] data = {"2", "3", "4", "5", "6", "7", "8", "9", "10"};

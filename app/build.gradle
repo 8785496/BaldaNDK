@@ -6,7 +6,7 @@ model {
         buildToolsVersion = "23.0.2"
 
         defaultConfig.with {
-            applicationId = "com.example.hellojni"
+            applicationId = "es.hol.chernyshov.balda"
             minSdkVersion.apiLevel = 17
             targetSdkVersion.apiLevel = 23
         }
@@ -21,7 +21,7 @@ model {
      * native build settings
      */
     android.ndk {
-        moduleName = "hello-jni"
+        moduleName = "balda"
         ldLibs = ["android", "log"]
         stl = "stlport_static"
         /*

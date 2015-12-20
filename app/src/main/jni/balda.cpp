@@ -1,4 +1,4 @@
-#include "hello-jni.h"
+#include "balda.h"
 #include <android/log.h>
 #include <android/asset_manager.h>
 #include <android/asset_manager_jni.h>
@@ -13,7 +13,7 @@ Track track;
 
 #include <string>
 
-JNIEXPORT void JNICALL Java_com_example_hellojni_MainActivity_nativDicInit
+JNIEXPORT void JNICALL Java_es_hol_chernyshov_balda_MainActivity_nativDicInit
         (JNIEnv * env, jobject obj, jobject assetManager, jint lang)
 {
     //Dic * dic = new Dic(env, assetManager);
@@ -21,7 +21,7 @@ JNIEXPORT void JNICALL Java_com_example_hellojni_MainActivity_nativDicInit
     track.initDic(env, assetManager, lang);
 };
 
-JNIEXPORT jboolean JNICALL Java_com_example_hellojni_MainActivity_nativFindWord
+JNIEXPORT jboolean JNICALL Java_es_hol_chernyshov_balda_MainActivity_nativFindWord
         (JNIEnv *env, jobject instance, jint chars_len, jbyteArray __chars)
 {
     jbyte * _chars = env->GetByteArrayElements(__chars, 0);
@@ -71,7 +71,7 @@ JNIEXPORT jboolean JNICALL Java_com_example_hellojni_MainActivity_nativFindWord
     //findTrack(unsigned char * arrData, int * coordinatesWord, int coordinatesWord_len, int cur, int ins)
 }
 
-void Java_com_example_hellojni_MainActivity_nativTrackInit
+void Java_es_hol_chernyshov_balda_MainActivity_nativTrackInit
         (JNIEnv *env, jobject obj, jlongArray _hashWords)
 {
     long long * hashWords = env->GetLongArrayElements(_hashWords, 0);
@@ -80,7 +80,7 @@ void Java_com_example_hellojni_MainActivity_nativTrackInit
     track.init(hashWords, hashWords_len);
 }
 
-void Java_com_example_hellojni_MainActivity_nativTrackIter
+void Java_es_hol_chernyshov_balda_MainActivity_nativTrackIter
         (JNIEnv *env, jobject obj, jbyteArray _space)
 {
     jbyte * space = env->GetByteArrayElements(_space, 0);
@@ -92,25 +92,25 @@ void Java_com_example_hellojni_MainActivity_nativTrackIter
     delete[] arrData;
 }
 
-jlong JNICALL Java_com_example_hellojni_MainActivity_nativGetWord
+jlong JNICALL Java_es_hol_chernyshov_balda_MainActivity_nativGetWord
         (JNIEnv * env, jobject obj)
 {
     return (jlong) track.getWord();
 };
 
-jbyte JNICALL Java_com_example_hellojni_MainActivity_nativGetCharValue
+jbyte JNICALL Java_es_hol_chernyshov_balda_MainActivity_nativGetCharValue
         (JNIEnv *, jobject)
 {
     return (jbyte) track.getCharValue();
 }
 
-jint JNICALL Java_com_example_hellojni_MainActivity_nativGetCharIndex
+jint JNICALL Java_es_hol_chernyshov_balda_MainActivity_nativGetCharIndex
         (JNIEnv *, jobject)
 {
     return (jint) track.getCharIndex();
 }
 
-jboolean Java_com_example_hellojni_MainActivity_nativFindWord
+jboolean Java_es_hol_chernyshov_balda_MainActivity_nativFindWord
         (JNIEnv *env, jobject jobject1, jbyteArray _bytes)
 {
     jbyte * bytes = env->GetByteArrayElements(_bytes, 0);
@@ -125,7 +125,7 @@ jboolean Java_com_example_hellojni_MainActivity_nativFindWord
     return result;
 }
 
-void Java_com_example_hellojni_MainActivity_nativDestruct
+void Java_es_hol_chernyshov_balda_MainActivity_nativDestruct
         (JNIEnv *env, jobject obj) {
     track.~Track();
 }
