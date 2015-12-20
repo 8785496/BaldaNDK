@@ -23,13 +23,13 @@
         android:text="Cancel"
         android:id="@+id/btnCancel"
         android:onClick="cancel"
-        android:layout_above="@+id/tableLayout"
-        android:layout_alignEnd="@+id/tableLayout" />
+        android:layout_above="@+id/table"
+        android:layout_alignEnd="@+id/table" />
 
     <TableLayout  xmlns:android = "http://schemas.android.com/apk/res/android"
         android:layout_width = "match_parent"
         android:layout_height = "wrap_content"
-        android:id="@+id/tableLayout"
+        android:id="@+id/table"
         android:layout_below="@+id/btnStep">
 
         <TableRow
@@ -246,16 +246,16 @@
         android:id="@+id/txtScorePlayer"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/tableLayout" />
+        android:layout_below="@+id/table" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Android"
         android:id="@+id/txtScoreAndroid"
-        android:layout_alignRight="@+id/tableLayout"
-        android:layout_alignEnd="@+id/tableLayout"
-        android:layout_below="@+id/tableLayout" />
+        android:layout_alignRight="@+id/table"
+        android:layout_alignEnd="@+id/table"
+        android:layout_below="@+id/table" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -291,7 +291,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView"
-        android:layout_below="@+id/tableLayout"
+        android:layout_below="@+id/table"
         android:layout_centerHorizontal="true" />
 
 

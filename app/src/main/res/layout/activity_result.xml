@@ -13,7 +13,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="0 : 0"
         android:id="@+id/txtScore"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:singleLine="true"
         android:layout_below="@+id/txtPlayers"
         android:layout_centerHorizontal="true" />
@@ -25,18 +25,17 @@
         android:text="Player : Android"
         android:id="@+id/txtPlayers"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Сохранить рекорд"
         android:id="@+id/button4"
+        android:layout_marginTop="25dp"
+        android:onClick="save"
         android:layout_below="@+id/txtScore"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp"
-        android:onClick="save"/>
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -44,6 +43,35 @@
         android:text="New Text"
         android:id="@+id/textView3"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Анонимная регистрация"
+        android:id="@+id/button5"
+        android:layout_below="@+id/button4"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="43dp" />
+        android:layout_marginTop="21dp"
+        android:onClick="registrationAnonymous"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Регистрация"
+        android:id="@+id/button6"
+        android:layout_marginTop="24dp"
+        android:layout_below="@+id/button5"
+        android:layout_centerHorizontal="true"
+        android:onClick="register"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Вход"
+        android:id="@+id/button7"
+        android:layout_marginTop="26dp"
+        android:layout_below="@+id/button6"
+        android:layout_centerHorizontal="true"
+        android:onClick="login"/>
 </RelativeLayout>
