@@ -21,8 +21,8 @@
         android:id="@+id/editText"
         android:layout_below="@+id/button"
         android:layout_marginTop="23dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
         android:text="Русский"
         android:id="@+id/button2"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:onClick="startRussian" />
 
     <Button
@@ -48,7 +48,7 @@
         android:text="Английский"
         android:id="@+id/button3"
         android:layout_alignBottom="@+id/button2"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:onClick="startEnglish"/>
 
     <Spinner
@@ -57,7 +57,7 @@
         android:id="@+id/spinner"
         android:layout_alignBaseline="@+id/textView2"
         android:layout_alignBottom="@+id/textView2"
-        android:layout_toEndOf="@+id/button2" />
+        android:layout_toRightOf="@+id/button2" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -65,5 +65,5 @@
         android:text="Сложность"
         android:id="@+id/textView2"
         android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentLeft="true" />
 </RelativeLayout>

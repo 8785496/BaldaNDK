@@ -7,7 +7,7 @@ model {
 
         defaultConfig.with {
             applicationId = "es.hol.chernyshov.balda"
-            minSdkVersion.apiLevel = 17
+            minSdkVersion.apiLevel = 16
             targetSdkVersion.apiLevel = 23
         }
     }

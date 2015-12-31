@@ -12,7 +12,13 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name" >
         <activity
-            android:name="es.hol.chernyshov.balda.StartActivity"
+            android:name=".MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_main"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".StartActivity"
             android:label="@string/title_activity_start" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,25 +27,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="es.hol.chernyshov.balda.MainActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_main"
-            android:theme="@android:style/Theme.DeviceDefault.NoActionBar" >
+            android:name=".KeyboardActivity"
+            android:theme="@android:style/Theme.DeviceDefault.Dialog.NoActionBar">
         </activity>
         <activity
-            android:name="es.hol.chernyshov.balda.KeyboardActivity"
-            android:theme="@android:style/Theme.DeviceDefault.Dialog.NoActionBar" >
-        </activity>
-        <activity
-            android:name="es.hol.chernyshov.balda.ResultActivity"
+            android:name=".ResultActivity"
             android:label="@string/title_activity_result" >
         </activity>
-        <activity android:name="es.hol.chernyshov.balda.RegisterActivity" >
+        <activity android:name=".RegisterActivity" >
         </activity>
-        <activity android:name="es.hol.chernyshov.balda.LoginActivity" >
+        <activity android:name=".LoginActivity" >
         </activity>
-        <activity android:name="es.hol.chernyshov.balda.RecordActivity" >
+        <activity android:name=".RecordActivity" >
         </activity>
+
     </application>
 
 </manifest>
