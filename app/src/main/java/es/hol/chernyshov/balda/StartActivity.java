@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,6 +43,14 @@ public class StartActivity extends Activity {
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setAdapter(adapter);
         spinner.setSelection(3);
+
+        TextView textView = (TextView) findViewById(R.id.txtTranslate);
+        textView.setText(Html.fromHtml(
+                        "<a href=\"balda://TranslateActivityHost?word=hello\">hello</a><br/>" +
+                        "<a href=\"balda://TranslateActivityHost?word=bay\">bay</a><br/>" +
+                        "<a href=\"balda://TranslateActivityHost?word=space\">space</a><br/>"
+        ));
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override

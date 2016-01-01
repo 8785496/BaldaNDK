@@ -9,4 +9,12 @@
         android:id="@+id/myRecord"
         android:title="My records"
         android:orderInCategory="200" />
+    <item
+        android:id="@+id/login"
+        android:title="Login"
+        android:orderInCategory="300" />
+    <item
+        android:id="@+id/logout"
+        android:title="Logout"
+        android:orderInCategory="400" />
 </menu>
