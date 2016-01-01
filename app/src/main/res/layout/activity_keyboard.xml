@@ -13,7 +13,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_1"
             android:onClick="sendResult"
-            android:text="А" />
+            android:text="а" />
 
         <Button
             android:layout_width="wrap_content"
@@ -21,7 +21,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_2"
             android:onClick="sendResult"
-            android:text="Б" />
+            android:text="б" />
 
         <Button
             android:layout_width="wrap_content"
@@ -29,7 +29,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_3"
             android:onClick="sendResult"
-            android:text="В" />
+            android:text="в" />
 
         <Button
             android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_4"
             android:onClick="sendResult"
-            android:text="Г" />
+            android:text="г" />
 
 
         <Button
@@ -46,7 +46,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_5"
             android:onClick="sendResult"
-            android:text="Д" />
+            android:text="д" />
 
         <Button
             android:layout_width="wrap_content"
@@ -54,7 +54,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_6"
             android:onClick="sendResult"
-            android:text="Е" />
+            android:text="е" />
 
         <Button
             android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_7"
             android:onClick="sendResult"
-            android:text="Ж" />
+            android:text="ж" />
 
         <Button
             android:layout_width="wrap_content"
@@ -70,7 +70,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_8"
             android:onClick="sendResult"
-            android:text="З" />
+            android:text="з" />
 
     </TableRow>
 
@@ -84,7 +84,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_9"
             android:onClick="sendResult"
-            android:text="И" />
+            android:text="и" />
 
         <Button
             android:layout_width="wrap_content"
@@ -92,7 +92,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_10"
             android:onClick="sendResult"
-            android:text="Й" />
+            android:text="й" />
 
         <Button
             android:layout_width="wrap_content"
@@ -100,7 +100,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_11"
             android:onClick="sendResult"
-            android:text="К" />
+            android:text="к" />
 
         <Button
             android:layout_width="wrap_content"
@@ -108,7 +108,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_12"
             android:onClick="sendResult"
-            android:text="Л" />
+            android:text="л" />
 
 
         <Button
@@ -117,7 +117,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_13"
             android:onClick="sendResult"
-            android:text="М" />
+            android:text="м" />
 
         <Button
             android:layout_width="wrap_content"
@@ -125,7 +125,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_14"
             android:onClick="sendResult"
-            android:text="Н" />
+            android:text="н" />
 
         <Button
             android:layout_width="wrap_content"
@@ -133,7 +133,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_15"
             android:onClick="sendResult"
-            android:text="О" />
+            android:text="о" />
 
         <Button
             android:layout_width="wrap_content"
@@ -141,7 +141,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_16"
             android:onClick="sendResult"
-            android:text="П" />
+            android:text="п" />
 
     </TableRow>
 
@@ -155,7 +155,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_17"
             android:onClick="sendResult"
-            android:text="Р" />
+            android:text="р" />
 
         <Button
             android:layout_width="wrap_content"
@@ -163,7 +163,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_18"
             android:onClick="sendResult"
-            android:text="С" />
+            android:text="с" />
 
         <Button
             android:layout_width="wrap_content"
@@ -171,7 +171,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_19"
             android:onClick="sendResult"
-            android:text="Т" />
+            android:text="т" />
 
         <Button
             android:layout_width="wrap_content"
@@ -179,7 +179,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_20"
             android:onClick="sendResult"
-            android:text="У" />
+            android:text="у" />
 
 
         <Button
@@ -188,7 +188,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_21"
             android:onClick="sendResult"
-            android:text="Ф" />
+            android:text="ф" />
 
         <Button
             android:layout_width="wrap_content"
@@ -196,7 +196,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_22"
             android:onClick="sendResult"
-            android:text="Х" />
+            android:text="х" />
 
         <Button
             android:layout_width="wrap_content"
@@ -204,7 +204,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_23"
             android:onClick="sendResult"
-            android:text="Ц" />
+            android:text="ц" />
 
         <Button
             android:layout_width="wrap_content"
@@ -212,7 +212,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_24"
             android:onClick="sendResult"
-            android:text="Ч" />
+            android:text="ч" />
 
     </TableRow>
 
@@ -226,7 +226,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_25"
             android:onClick="sendResult"
-            android:text="Ш" />
+            android:text="ш" />
 
         <Button
             android:layout_width="wrap_content"
@@ -234,7 +234,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_26"
             android:onClick="sendResult"
-            android:text="Щ" />
+            android:text="щ" />
 
         <Button
             android:layout_width="wrap_content"
@@ -242,7 +242,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_27"
             android:onClick="sendResult"
-            android:text="Ъ" />
+            android:text="ъ" />
 
         <Button
             android:layout_width="wrap_content"
@@ -250,7 +250,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_28"
             android:onClick="sendResult"
-            android:text="Ы" />
+            android:text="ы" />
 
 
         <Button
@@ -259,7 +259,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_29"
             android:onClick="sendResult"
-            android:text="Ь" />
+            android:text="ь" />
 
         <Button
             android:layout_width="wrap_content"
@@ -267,7 +267,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_30"
             android:onClick="sendResult"
-            android:text="Э" />
+            android:text="э" />
 
         <Button
             android:layout_width="wrap_content"
@@ -275,7 +275,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_31"
             android:onClick="sendResult"
-            android:text="Ю" />
+            android:text="ю" />
 
         <Button
             android:layout_width="wrap_content"
@@ -283,7 +283,7 @@
             android:layout_weight="0.125"
             android:id="@+id/button_32"
             android:onClick="sendResult"
-            android:text="Я" />
+            android:text="я" />
 
     </TableRow>
 
@@ -294,10 +294,11 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Cancel"
             android:id="@+id/button_cancel"
-            android:layout_column="0"
-            android:onClick="sendResult"/>
+            android:onClick="sendResult"
+            android:layout_span="4"/>
     </TableRow>
 
 </TableLayout>

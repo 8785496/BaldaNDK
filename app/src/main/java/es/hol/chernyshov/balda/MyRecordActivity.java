@@ -1,9 +1,8 @@
 package es.hol.chernyshov.balda;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,17 +16,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-
-public class RecordActivity extends Activity {
+public class MyRecordActivity extends Activity {
     private TableLayout table;
     private TableRow.LayoutParams paramsUser;
     private TableRow.LayoutParams paramsPoint;
@@ -35,9 +30,18 @@ public class RecordActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_record);
 
-        table = (TableLayout) findViewById(R.id.table);
+        SharedPreferences myPreferences = getSharedPreferences("mySettings", Context.MODE_PRIVATE);
+        String username = myPreferences.getString("username", "");
+
+        if (username == "") {
+            startActivity(new Intent(this, RegisterActivity.class));
+            finish();
+        }
+
+        setContentView(R.layout.activity_my_record);
+
+        table = (TableLayout) findViewById(R.id.tableMyRecord);
 
         paramsUser = new TableRow.LayoutParams();
         paramsUser.weight = 0.8f;
@@ -45,16 +49,16 @@ public class RecordActivity extends Activity {
         paramsPoint = new TableRow.LayoutParams();
         paramsPoint.weight = 0.2f;
 
-        new GetRecordsTask().execute();
+        new GetRecordsTask().execute(username);
     }
 
-    private class GetRecordsTask extends AsyncTask<Void, Void, JSONArray> {
+    private class GetRecordsTask extends AsyncTask<String, Void, JSONArray> {
         @Override
-        protected JSONArray doInBackground(Void... params) {
+        protected JSONArray doInBackground(String... params) {
             HttpURLConnection urlConnection = null;
             JSONArray jsonRecords = null;
             try {
-                URL url = new URL("http://chernyshov.hol.es/record");
+                URL url = new URL("http://chernyshov.hol.es/record/" + params[0]);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setReadTimeout(10000);
                 urlConnection.setConnectTimeout(15000);

@@ -30,30 +30,12 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Сохранить рекорд"
-        android:id="@+id/button4"
-        android:layout_marginTop="25dp"
-        android:onClick="save"
-        android:layout_below="@+id/txtScore"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/textView3"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Анонимная регистрация"
+        android:text="Сохранить рекорд анонимно"
         android:id="@+id/button5"
-        android:layout_below="@+id/button4"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="21dp"
-        android:onClick="registrationAnonymous"/>
+        android:onClick="registrationAnonymous"
+        android:layout_below="@+id/txtScore" />
 
     <Button
         android:layout_width="wrap_content"

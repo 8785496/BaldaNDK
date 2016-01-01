@@ -57,6 +57,9 @@ public class StartActivity extends Activity {
             case R.id.record:
                 startActivity(new Intent(this, RecordActivity.class));
                 return true;
+            case R.id.myRecord:
+                startActivity(new Intent(this, MyRecordActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
