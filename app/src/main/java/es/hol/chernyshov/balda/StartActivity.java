@@ -30,27 +30,30 @@ import java.net.URL;
 
 public class StartActivity extends Activity {
     String[] data = {"2", "3", "4", "5", "6", "7", "8", "9", "10"};
+    String[] lang = {"Русский", "Английский"};
+    private Spinner spinnerComplexity;
+    private Spinner spinnerLang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        // адаптер
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, data);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Complexity
+        ArrayAdapter<String> adapterComplexity = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, data);
+        adapterComplexity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        spinner.setAdapter(adapter);
-        spinner.setSelection(3);
+        spinnerComplexity = (Spinner) findViewById(R.id.spinner);
+        spinnerComplexity.setAdapter(adapterComplexity);
+        spinnerComplexity.setSelection(3);
 
-        TextView textView = (TextView) findViewById(R.id.txtTranslate);
-        textView.setText(Html.fromHtml(
-                        "<a href=\"balda://TranslateActivityHost?word=hello\">hello</a><br/>" +
-                        "<a href=\"balda://TranslateActivityHost?word=bay\">bay</a><br/>" +
-                        "<a href=\"balda://TranslateActivityHost?word=space\">space</a><br/>"
-        ));
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        // Lang
+        ArrayAdapter<String> adapterLang = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, lang);
+        adapterLang.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerLang = (Spinner) findViewById(R.id.spinnerLang);
+        spinnerLang.setAdapter(adapterLang);
+        spinnerLang.setSelection(0);
     }
 
     @Override
@@ -75,11 +78,6 @@ public class StartActivity extends Activity {
         }
     }
 
-    public void getTranslate(View view) {
-        EditText editText = (EditText) findViewById(R.id.editText);
-        new ParseTask().execute(editText.getText().toString());
-    }
-
     public void startRussian(View view) {
         Intent intent = new Intent(StartActivity.this, MainActivity.class);
         intent.putExtra("lang", 0);
@@ -92,60 +90,10 @@ public class StartActivity extends Activity {
         startActivity(intent);
     }
 
-    private class ParseTask extends AsyncTask<String, Void, String> {
-        String resultJson = "";
-
-        @Override
-        protected String doInBackground(String... params) {
-//                String key = "dict.1.1.20151211T161559Z.76ec6129fecd755b.447faf7495f92ff3f651ec3928e36d8cbacefb23";
-//                String word = URLEncoder.encode(params[0], "UTF-8"); //"time";
-//                URL url = new URL("https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=" + key + "&lang=ru-ru&text=" + word);
-            try {
-                URL url = new URL("http://chernyshov.hol.es/record");
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setReadTimeout(10000);
-                urlConnection.setConnectTimeout(15000);
-                urlConnection.setRequestMethod("POST");
-                OutputStream outputStream = urlConnection.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                JSONObject data = new JSONObject();
-                JSONObject user = new JSONObject();
-                user.put("username", "Ivan1111");
-                user.put("password", "pass");
-                data.put("score", new Integer(312));
-                data.put("user", user);
-                writer.write(data.toString());
-                writer.flush();
-                writer.close();
-                outputStream.close();
-                urlConnection.connect();
-                InputStream inputStream = urlConnection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    buffer.append(line);
-                }
-                resultJson = buffer.toString();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return resultJson;
-        }
-
-        @Override
-        protected void onPostExecute(String strJson) {
-            super.onPostExecute(strJson);
-            Log.d("BaldaNDK", strJson);
-            try {
-                TextView textView = (TextView) findViewById(R.id.txtTranslate);
-                JSONObject data = new JSONObject(strJson);
-                int score = data.getInt("status");
-                textView.setText(String.valueOf(score));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+    public void startGame(View view) {
+        Intent intent = new Intent(StartActivity.this, MainActivity.class);
+        intent.putExtra("lang", spinnerLang.getSelectedItemPosition());
+        intent.putExtra("complexity", spinnerLang.getSelectedItemPosition());
+        startActivity(intent);
     }
-
 }

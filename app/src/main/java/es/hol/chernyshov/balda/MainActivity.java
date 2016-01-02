@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -70,6 +73,35 @@ public class MainActivity extends Activity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        if (lang == 1) {
+            inflater.inflate(R.menu.menu_main_en, menu);
+        } else {
+            inflater.inflate(R.menu.menu_main, menu);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.help:
+                long[] longArr = nativHelp();
+                Log.d("BaldaNDK", String.valueOf(longArr[0]));
+                // TODO
+                return true;
+            case R.id.miss:
+                miss();
+                item.setEnabled(false);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         nativDestruct();
@@ -102,6 +134,8 @@ public class MainActivity extends Activity {
 
     private native boolean nativFindWord(byte[] chars);
 
+    private native long[] nativHelp();
+
     private String hashToString(long hash) {
 //        return String.valueOf(hash);
 
@@ -132,7 +166,7 @@ public class MainActivity extends Activity {
         return bytes;
     }
 
-    public void trackInit(View view) {
+    public void trackInit(/*View view*/) {
         int n = wordsAll.size();
         long[] words = new long[n];
         for(int i = 0; i < n; i++){
@@ -141,7 +175,7 @@ public class MainActivity extends Activity {
         nativTrackInit(words);
     }
 
-    public void trackIter(View view) {
+    public void trackIter(/*View view*/) {
         byte _space[];
         _space = Arrays.copyOf(space, space.length);
 
@@ -152,7 +186,7 @@ public class MainActivity extends Activity {
         Log.d("BaldaNDK", "time  = " + String.valueOf(timeout));
     }
 
-    public void getWord(View view) {
+    public void getWord(/*View view*/) {
         long hash = nativGetWord();
         String word = hashToString(hash);
         Log.d("BaldaNDk", "hashNDK = " + word);
@@ -419,9 +453,9 @@ public class MainActivity extends Activity {
                 insertCharIndex = -1;
                 wordsAll.add(word);
                 wordsUser.add(word);
-                trackInit(view);
-                trackIter(view);
-                getWord(view);
+                trackInit();
+                trackIter();
+                getWord();
                 if (endGame()) {
                     notification("End game!");
                     Intent intent = new Intent(MainActivity.this, ResultActivity.class);
@@ -441,6 +475,10 @@ public class MainActivity extends Activity {
     }
 
     public void cancel(View view) {
+        _cancel();
+    }
+
+    private void _cancel() {
         boolTrack = false;
         coordinates.clear();
         if (insertCharIndex != -1) {
@@ -451,6 +489,14 @@ public class MainActivity extends Activity {
         txtWord.setText("");
         TextView textView = (TextView) findViewById(R.id.textView);
         textView.setText("");
+        refresh();
+    }
+
+    private void miss() {
+        _cancel();
+        trackInit();
+        trackIter();
+        getWord();
         refresh();
     }
 
@@ -483,4 +529,6 @@ public class MainActivity extends Activity {
         }
         return scoreAndroid;
     }
+
+
 }

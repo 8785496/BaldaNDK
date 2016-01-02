@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="es.hol.chernyshov.balda.MainActivity">
+    <item
+        android:id="@+id/miss"
+        android:title="@string/action_miss"
+        android:orderInCategory="200" />
+</menu>

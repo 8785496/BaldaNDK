@@ -13,7 +13,7 @@ Track track;
 
 #include <string>
 
-JNIEXPORT void JNICALL Java_es_hol_chernyshov_balda_MainActivity_nativDicInit
+void Java_es_hol_chernyshov_balda_MainActivity_nativDicInit
         (JNIEnv * env, jobject obj, jobject assetManager, jint lang)
 {
     //Dic * dic = new Dic(env, assetManager);
@@ -21,7 +21,7 @@ JNIEXPORT void JNICALL Java_es_hol_chernyshov_balda_MainActivity_nativDicInit
     track.initDic(env, assetManager, lang);
 };
 
-JNIEXPORT jboolean JNICALL Java_es_hol_chernyshov_balda_MainActivity_nativFindWord
+jboolean Java_es_hol_chernyshov_balda_MainActivity_nativFindWord
         (JNIEnv *env, jobject instance, jint chars_len, jbyteArray __chars)
 {
     jbyte * _chars = env->GetByteArrayElements(__chars, 0);
@@ -92,19 +92,19 @@ void Java_es_hol_chernyshov_balda_MainActivity_nativTrackIter
     delete[] arrData;
 }
 
-jlong JNICALL Java_es_hol_chernyshov_balda_MainActivity_nativGetWord
+jlong Java_es_hol_chernyshov_balda_MainActivity_nativGetWord
         (JNIEnv * env, jobject obj)
 {
     return (jlong) track.getWord();
 };
 
-jbyte JNICALL Java_es_hol_chernyshov_balda_MainActivity_nativGetCharValue
+jbyte Java_es_hol_chernyshov_balda_MainActivity_nativGetCharValue
         (JNIEnv *, jobject)
 {
     return (jbyte) track.getCharValue();
 }
 
-jint JNICALL Java_es_hol_chernyshov_balda_MainActivity_nativGetCharIndex
+jint Java_es_hol_chernyshov_balda_MainActivity_nativGetCharIndex
         (JNIEnv *, jobject)
 {
     return (jint) track.getCharIndex();
@@ -128,4 +128,15 @@ jboolean Java_es_hol_chernyshov_balda_MainActivity_nativFindWord
 void Java_es_hol_chernyshov_balda_MainActivity_nativDestruct
         (JNIEnv *env, jobject obj) {
     track.~Track();
+}
+
+jlongArray Java_es_hol_chernyshov_balda_MainActivity_nativHelp
+        (JNIEnv *env, jobject jobject1) {
+    jlongArray jlongArray1 = env->NewLongArray(1);
+    jlong * jlongBuf = new jlong[1];
+    jlongBuf[0] = 122;
+    env->SetLongArrayRegion(jlongArray1, 0, 1, jlongBuf);
+    delete[] jlongBuf;
+    return jlongArray1;
+    // TODO
 }

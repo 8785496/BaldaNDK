@@ -7,6 +7,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+JNIEXPORT jlongArray JNICALL Java_es_hol_chernyshov_balda_MainActivity_nativHelp
+        (JNIEnv *, jobject);
+
 /*
  * Class:     es_hol_chernyshov_balda_MainActivity
  * Method:    nativDestruct

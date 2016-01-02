@@ -11,5 +11,10 @@
     <string name="action_login">Вход</string>
     <string name="action_logout">Выход</string>
 
+    <string name="action_help">Помощь</string>
+    <string name="action_miss">Пропустить ход</string>
+
+    <string name="action_start">Начать игру</string>
+
     <string name="text_yandex">Реализовано с помощью сервиса <a href="http://api.yandex.ru/dictionary/">API Яндекс.Словарь</a></string>
 </resources>
