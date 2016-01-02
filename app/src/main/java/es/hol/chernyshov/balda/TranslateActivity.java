@@ -85,13 +85,12 @@ public class TranslateActivity extends Activity {
                     word = def_0.getString("text");
                     ts = "[" + def_0.getString("ts") + "]";
 
-                    tr += "<ul>";
                     for (int i = 0; i < def.length(); i++) {
                         JSONArray jsonArray = def.getJSONObject(i).getJSONArray("tr");
                         JSONObject jsonTr = jsonArray.getJSONObject(0);
-                        tr += "<li>" + jsonTr.toString() + "</li>";
+                        String text = jsonTr.getString("text");
+                        tr += "<p>" + text + "</p>";
                     }
-                    tr += "</ul>";
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

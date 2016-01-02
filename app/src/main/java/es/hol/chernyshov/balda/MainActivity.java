@@ -365,7 +365,7 @@ public class MainActivity extends Activity {
         int scorePlayer = 0;
         for (String word : wordsUser) {
             if (lang == 1) {
-                strWordsPlayer += "<a href=\"balda://TranslateActivityHost?word=" + word + "\"" + word + "<br/>";
+                strWordsPlayer += "<a href=\"balda://TranslateActivityHost?word=" + word + "\">" + word + "</a><br/>";
             } else {
                 strWordsPlayer += word + "\n";
             }
@@ -384,10 +384,19 @@ public class MainActivity extends Activity {
         String strWordsAndroid = "";
         int scoreAndroid = 0;
         for (String word : wordsAndroid) {
-            strWordsAndroid += word + "\n";
+            if (lang == 1) {
+                strWordsAndroid += "<a href=\"balda://TranslateActivityHost?word=" + word + "\">" + word + "</a><br/>";
+            } else {
+                strWordsAndroid += word + "\n";
+            }
             scoreAndroid += word.length();
         }
-        txtAndroid.setText(strWordsAndroid);
+        if (lang == 1) {
+            txtAndroid.setText(Html.fromHtml(strWordsAndroid));
+            txtAndroid.setMovementMethod(LinkMovementMethod.getInstance());
+        } else {
+            txtAndroid.setText(strWordsAndroid);
+        }
         txtScoreAndroid.setText("Android: " + String.valueOf(scoreAndroid));
     }
 
@@ -413,7 +422,7 @@ public class MainActivity extends Activity {
                 trackInit(view);
                 trackIter(view);
                 getWord(view);
-                if (!endGame()) {
+                if (endGame()) {
                     notification("End game!");
                     Intent intent = new Intent(MainActivity.this, ResultActivity.class);
                     intent.putExtra("scorePlayer", getScorePlayer());
