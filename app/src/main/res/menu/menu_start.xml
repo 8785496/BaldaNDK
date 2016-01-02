@@ -3,18 +3,18 @@
     tools:context="es.hol.chernyshov.balda.StartActivity">
     <item
         android:id="@+id/record"
-        android:title="Records"
+        android:title="@string/action_records"
         android:orderInCategory="100" />
     <item
         android:id="@+id/myRecord"
-        android:title="My records"
+        android:title="@string/action_my_records"
         android:orderInCategory="200" />
     <item
         android:id="@+id/login"
-        android:title="Login"
+        android:title="@string/action_login"
         android:orderInCategory="300" />
     <item
         android:id="@+id/logout"
-        android:title="Logout"
+        android:title="@string/action_logout"
         android:orderInCategory="400" />
 </menu>

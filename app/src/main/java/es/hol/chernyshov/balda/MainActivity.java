@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -362,10 +364,19 @@ public class MainActivity extends Activity {
         String strWordsPlayer = "";
         int scorePlayer = 0;
         for (String word : wordsUser) {
-            strWordsPlayer += word + "\n";
+            if (lang == 1) {
+                strWordsPlayer += "<a href=\"balda://TranslateActivityHost?word=" + word + "\"" + word + "<br/>";
+            } else {
+                strWordsPlayer += word + "\n";
+            }
             scorePlayer += word.length();
         }
-        txtPlayer.setText(strWordsPlayer);
+        if (lang == 1) {
+            txtPlayer.setText(Html.fromHtml(strWordsPlayer));
+            txtPlayer.setMovementMethod(LinkMovementMethod.getInstance());
+        } else {
+            txtPlayer.setText(strWordsPlayer);
+        }
         txtScorePlayer.setText("Player: " + String.valueOf(scorePlayer));
 
         TextView txtAndroid = (TextView) findViewById(R.id.txtAndroid);

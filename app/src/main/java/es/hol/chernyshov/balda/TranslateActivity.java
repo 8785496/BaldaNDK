@@ -5,8 +5,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -26,8 +31,10 @@ public class TranslateActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_translate);
 
-        Uri uri = getIntent().getData();
+        TextView txtYandex = (TextView) findViewById(R.id.txtYandex);
+        txtYandex.setMovementMethod(LinkMovementMethod.getInstance());
 
+        Uri uri = getIntent().getData();
         String word = uri.getQueryParameter("word");
         Log.d("BaldaNDK", word);
 
@@ -42,7 +49,7 @@ public class TranslateActivity extends Activity {
             String resultJson = "";
             String key = "dict.1.1.20151211T161559Z.76ec6129fecd755b.447faf7495f92ff3f651ec3928e36d8cbacefb23";
             try {
-                String word = URLEncoder.encode(params[0], "UTF-8"); //"time";
+                String word = URLEncoder.encode(params[0], "UTF-8");
                 URL url = new URL("https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=" + key + "&lang=en-ru&text=" + word);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setReadTimeout(10000);
@@ -64,6 +71,42 @@ public class TranslateActivity extends Activity {
             }
             Log.d("BaldaNDK", resultJson);
             return resultJson;
+        }
+
+        protected void onPostExecute(String result) {
+            String word = "";
+            String ts = "";
+            String tr = "";
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                if (jsonObject.has("def")) {
+                    JSONArray def = jsonObject.getJSONArray("def");
+                    JSONObject def_0 = def.getJSONObject(0);
+                    word = def_0.getString("text");
+                    ts = "[" + def_0.getString("ts") + "]";
+
+                    tr += "<ul>";
+                    for (int i = 0; i < def.length(); i++) {
+                        JSONArray jsonArray = def.getJSONObject(i).getJSONArray("tr");
+                        JSONObject jsonTr = jsonArray.getJSONObject(0);
+                        tr += "<li>" + jsonTr.toString() + "</li>";
+                    }
+                    tr += "</ul>";
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            //String text = word + "<br>" + ts;
+
+            TextView txtWord = (TextView) findViewById(R.id.txtWord);
+            txtWord.setText(word);
+
+            Log.d("BaldaNDK", tr);
+            TextView txtTranscription = (TextView) findViewById(R.id.txtTranscription);
+            txtTranscription.setText(ts);
+
+            TextView txtTranslate = (TextView) findViewById(R.id.txtTranslate);
+            txtTranslate.setText(Html.fromHtml(tr));
         }
     }
 }

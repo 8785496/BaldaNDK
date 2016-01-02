@@ -34,22 +34,24 @@ public class MyRecordActivity extends Activity {
         SharedPreferences myPreferences = getSharedPreferences("mySettings", Context.MODE_PRIVATE);
         String username = myPreferences.getString("username", "");
 
+        Log.d("BaldaNDK", "username = " + username);
+
         if (username == "") {
             startActivity(new Intent(this, RegisterActivity.class));
             finish();
+        } else {
+            setContentView(R.layout.activity_my_record);
+
+            table = (TableLayout) findViewById(R.id.tableMyRecord);
+
+            paramsUser = new TableRow.LayoutParams();
+            paramsUser.weight = 0.8f;
+
+            paramsPoint = new TableRow.LayoutParams();
+            paramsPoint.weight = 0.2f;
+
+            new GetRecordsTask().execute(username);
         }
-
-        setContentView(R.layout.activity_my_record);
-
-        table = (TableLayout) findViewById(R.id.tableMyRecord);
-
-        paramsUser = new TableRow.LayoutParams();
-        paramsUser.weight = 0.8f;
-
-        paramsPoint = new TableRow.LayoutParams();
-        paramsPoint.weight = 0.2f;
-
-        new GetRecordsTask().execute(username);
     }
 
     private class GetRecordsTask extends AsyncTask<String, Void, JSONArray> {

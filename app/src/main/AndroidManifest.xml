@@ -57,7 +57,8 @@
             android:label="My records" >
         </activity>
         <activity
-            android:name=".TranslateActivity">
+            android:name=".TranslateActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <data android:scheme="balda" android:host="TranslateActivityHost" />
                 <action android:name="android.intent.action.VIEW" />
