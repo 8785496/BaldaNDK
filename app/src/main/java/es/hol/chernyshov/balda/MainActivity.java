@@ -110,6 +110,8 @@ public class MainActivity extends Activity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        setContentView(R.layout.activity_main);
+        refresh();
         // Проверяем ориентацию экрана
 //        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
 //            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();

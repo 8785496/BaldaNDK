@@ -1,6 +1,7 @@
 package es.hol.chernyshov.balda;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class TranslateActivity extends Activity {
+    String word;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,7 @@ public class TranslateActivity extends Activity {
         txtYandex.setMovementMethod(LinkMovementMethod.getInstance());
 
         Uri uri = getIntent().getData();
-        String word = uri.getQueryParameter("word");
+        word = uri.getQueryParameter("word");
         Log.d("BaldaNDK", word);
 
         new TranslateTask().execute(word);
@@ -74,22 +76,25 @@ public class TranslateActivity extends Activity {
         }
 
         protected void onPostExecute(String result) {
-            String word = "";
+            //String word = "";
             String ts = "";
             String tr = "";
             try {
                 JSONObject jsonObject = new JSONObject(result);
                 if (jsonObject.has("def")) {
                     JSONArray def = jsonObject.getJSONArray("def");
-                    JSONObject def_0 = def.getJSONObject(0);
-                    word = def_0.getString("text");
-                    ts = "[" + def_0.getString("ts") + "]";
-
-                    for (int i = 0; i < def.length(); i++) {
-                        JSONArray jsonArray = def.getJSONObject(i).getJSONArray("tr");
-                        JSONObject jsonTr = jsonArray.getJSONObject(0);
-                        String text = jsonTr.getString("text");
-                        tr += "<p>" + text + "</p>";
+                    if (def.length() > 0) {
+                        JSONObject def_0 = def.getJSONObject(0);
+                        word = def_0.getString("text");
+                        ts = "[" + def_0.getString("ts") + "]";for (int i = 0; i < def.length(); i++) {
+                            JSONArray jsonArray = def.getJSONObject(i).getJSONArray("tr");
+                            JSONObject jsonTr = jsonArray.getJSONObject(0);
+                            String text = jsonTr.getString("text");
+                            tr += "<p>" + text + "</p>";
+                        }
+                    } else {
+                        Resources res = getResources();
+                        word = String.format(res.getString(R.string.error_word_not_found), word);
                     }
                 }
             } catch (JSONException e) {
