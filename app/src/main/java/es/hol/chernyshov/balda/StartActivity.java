@@ -2,31 +2,14 @@ package es.hol.chernyshov.balda;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class StartActivity extends Activity {
     String[] data = {"2", "3", "4", "5", "6", "7", "8", "9", "10"};
@@ -56,44 +39,41 @@ public class StartActivity extends Activity {
         spinnerLang.setSelection(0);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_start, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.record:
-                startActivity(new Intent(this, RecordActivity.class));
-                return true;
-            case R.id.myRecord:
-                startActivity(new Intent(this, MyRecordActivity.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    public void startRussian(View view) {
-        Intent intent = new Intent(StartActivity.this, MainActivity.class);
-        intent.putExtra("lang", 0);
-        startActivity(intent);
-    }
-
-    public void startEnglish(View view) {
-        Intent intent = new Intent(StartActivity.this, MainActivity.class);
-        intent.putExtra("lang", 1);
-        startActivity(intent);
-    }
-
     public void startGame(View view) {
         Intent intent = new Intent(StartActivity.this, MainActivity.class);
         intent.putExtra("lang", spinnerLang.getSelectedItemPosition());
         intent.putExtra("complexity", spinnerLang.getSelectedItemPosition());
+        intent.putExtra("startWord", ""); // TODO
         startActivity(intent);
     }
+
+
+    public void records(View view) {
+        startActivity(new Intent(this, RecordActivity.class));
+    }
+
+    public void myRecords(View view) {
+        startActivity(new Intent(this, MyRecordActivity.class));
+    }
+
+    public void registration(View view) {
+        startActivity(new Intent(this, RegisterActivity.class));
+    }
+
+    public void login(View view) {
+        startActivity(new Intent(this, LoginActivity.class));
+    }
+
+    public void logout(View view) {
+    }
+
+
+
+    public void setWord(View view) {
+        Log.d("BaldaNDK", "set word");
+    }
+
+
+
+
 }

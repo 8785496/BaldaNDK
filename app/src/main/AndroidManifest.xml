@@ -39,22 +39,22 @@
         <activity
             android:name=".RegisterActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="Registration" >
+            android:label="@string/title_activity_registration" >
         </activity>
         <activity
             android:name=".LoginActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="Login" >
+            android:label="@string/title_activity_login" >
         </activity>
         <activity
             android:name=".RecordActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="Records" >
+            android:label="@string/title_activity_records" >
         </activity>
         <activity
             android:name=".MyRecordActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="My records" >
+            android:label="@string/title_activity_my_records" >
         </activity>
         <activity
             android:name=".TranslateActivity"

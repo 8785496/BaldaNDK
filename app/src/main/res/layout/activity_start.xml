@@ -11,7 +11,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -19,29 +18,24 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
                 <TextView
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_column="0"
+                    android:minHeight="40dp"
                     android:layout_weight="1"
-                    android:text="Сложность" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/label_complexity" />
 
                 <Spinner
                     android:id="@+id/spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/button3"
-                    android:layout_alignStart="@+id/button3"
-                    android:layout_alignTop="@+id/textView2"
-                    android:layout_column="1"
                     android:layout_weight="1"
                     android:spinnerMode="dropdown" />
             </TableRow>
+
+
 
             <TableRow
                 android:layout_width="match_parent"
@@ -51,21 +45,56 @@
                     android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignTop="@+id/spinnerLang"
+                    android:minHeight="40dp"
                     android:layout_weight="1"
-                    android:text="Язык" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/label_lang" />
 
                 <Spinner
                     android:id="@+id/spinnerLang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/button3"
-                    android:layout_below="@+id/spinner"
-                    android:layout_column="1"
                     android:layout_weight="1"
                     android:spinnerMode="dropdown" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="40dp"
+                    android:layout_weight="1"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Начальное слово" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_column="1">
+
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Случайное"
+                        android:id="@+id/radioButton"
+                        android:layout_gravity="center_horizontal"
+                        android:checked="true" />
+
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Выбрать слово"
+                        android:id="@+id/radioButton2"
+                        android:layout_gravity="center_horizontal"
+                        android:checked="false"
+                        android:onClick="setWord"/>
+                </RadioGroup>
+
+
             </TableRow>
 
             <TableRow
@@ -76,15 +105,71 @@
                     android:id="@+id/btnStart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_above="@+id/button2"
-                    android:layout_centerHorizontal="true"
+                    android:layout_weight="1"
                     android:onClick="startGame"
                     android:text="@string/action_start" />
-
             </TableRow>
 
-        </TableLayout>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
+                <Button
+                    android:id="@+id/btnRecords"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="records"
+                    android:text="@string/action_records" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/btnMyRecords"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="myRecords"
+                    android:text="@string/action_my_records" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/btnLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="login"
+                    android:text="@string/action_login" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/btnLogout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="logout"
+                    android:text="@string/action_logout" />
+            </TableRow>
+
+            <Button
+                android:id="@+id/btnRegistr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="registration"
+                android:text="@string/action_registration" />
+        </TableLayout>
     </ScrollView>
 </LinearLayout>
 
