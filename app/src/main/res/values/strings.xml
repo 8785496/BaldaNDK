@@ -29,4 +29,5 @@
     <string name="label_repeat_password">Повторите пароль</string>
 
     <string name="error_word_not_found">Слово "%s" не найдено</string>
+    <string name="error_server">Ошибка сервера</string>
 </resources>
