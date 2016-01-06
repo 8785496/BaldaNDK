@@ -104,8 +104,14 @@ public class MainActivity extends Activity {
                 trackInit();
                 trackIter();
                 long[] longArr = nativHelp();
-                Log.d("BaldaNDK", hashToString(longArr[0]));
-                // TODO
+                String[] strArr = new String[longArr.length];
+                for (int i = 0; i < longArr.length; i++) {
+                    strArr[i] = hashToString(longArr[i]);
+                }
+                Intent intent = new Intent(this, HelpActivity.class);
+                intent.putExtra("wordsHelp", strArr);
+                startActivity(intent);
+                //Log.d("BaldaNDK", hashToString(longArr[0]));
                 return true;
             case R.id.miss:
                 miss();

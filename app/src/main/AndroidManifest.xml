@@ -58,13 +58,19 @@
         </activity>
         <activity
             android:name=".TranslateActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize">
+            android:configChanges="keyboardHidden|orientation|screenSize" >
             <intent-filter>
-                <data android:scheme="balda" android:host="TranslateActivityHost" />
+                <data
+                    android:host="TranslateActivityHost"
+                    android:scheme="balda" />
+
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
+        </activity>
+        <activity android:name=".HelpActivity" >
         </activity>
     </application>
 
