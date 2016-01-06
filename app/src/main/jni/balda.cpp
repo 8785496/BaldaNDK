@@ -13,6 +13,35 @@ Track track;
 
 #include <string>
 
+jlongArray Java_es_hol_chernyshov_balda_MainActivity_nativHelp
+        (JNIEnv *env, jobject instance) {
+    std::vector<jlong> wordsHelp = track.getWordsHelp();
+    int n = (int) wordsHelp.size();
+    jlongArray jlongArray1 = env->NewLongArray(n);
+    jlong * jlongBuf = new jlong[n];
+    for (int i = 0; i < n; i++) {
+        jlongBuf[i] = wordsHelp[i];
+    }
+//    jlongBuf[0] = 122L;
+//    jlongBuf[1] = 123L;
+    env->SetLongArrayRegion(jlongArray1, 0, n, jlongBuf);
+    delete[] jlongBuf;
+    return jlongArray1;
+    // TODO
+}
+
+jlong Java_es_hol_chernyshov_balda_MainActivity_nativCountWordLen5
+        (JNIEnv *env, jobject instance) {
+    return track.dic.countWordLen5();
+}
+
+jlong Java_es_hol_chernyshov_balda_MainActivity_nativRandomWord
+        (JNIEnv *env, jobject instance, jint index) {
+    // TODO
+    return track.dic.randomWord(index);
+    //return 5L;
+}
+
 void Java_es_hol_chernyshov_balda_MainActivity_nativDicInit
         (JNIEnv * env, jobject obj, jobject assetManager, jint lang)
 {
@@ -128,15 +157,4 @@ jboolean Java_es_hol_chernyshov_balda_MainActivity_nativFindWord
 void Java_es_hol_chernyshov_balda_MainActivity_nativDestruct
         (JNIEnv *env, jobject obj) {
     track.~Track();
-}
-
-jlongArray Java_es_hol_chernyshov_balda_MainActivity_nativHelp
-        (JNIEnv *env, jobject jobject1) {
-    jlongArray jlongArray1 = env->NewLongArray(1);
-    jlong * jlongBuf = new jlong[1];
-    jlongBuf[0] = 122;
-    env->SetLongArrayRegion(jlongArray1, 0, 1, jlongBuf);
-    delete[] jlongBuf;
-    return jlongArray1;
-    // TODO
 }

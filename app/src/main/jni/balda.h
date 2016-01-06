@@ -8,6 +8,12 @@
 extern "C" {
 #endif
 
+JNIEXPORT jlong JNICALL Java_es_hol_chernyshov_balda_MainActivity_nativCountWordLen5
+        (JNIEnv *env, jobject instance);
+
+JNIEXPORT jlong JNICALL Java_es_hol_chernyshov_balda_MainActivity_nativRandomWord
+        (JNIEnv *env, jobject instance, jint index);
+
 JNIEXPORT jlongArray JNICALL Java_es_hol_chernyshov_balda_MainActivity_nativHelp
         (JNIEnv *, jobject);
 

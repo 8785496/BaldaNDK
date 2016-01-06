@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 public class MainActivity extends Activity {
     //private String chars = " абвгдежзийклмнопрстуфхцчшщъыьэюя";
@@ -28,6 +29,7 @@ public class MainActivity extends Activity {
     private boolean boolTrack = false;
     int insertCharIndex = -1;
     int lang;
+    boolean isRandom;
     int scorePlayer;
     int scoreAndroid;
 
@@ -42,32 +44,42 @@ public class MainActivity extends Activity {
 
         Intent intent = getIntent();
         lang = intent.getIntExtra("lang", 0);
-
-        if (lang == 1) {
-            chars = " abcdefghijklmnopqrstuvwxyz";
-            wordsAll.add("panda");
-            space = new byte[] {
-                    0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0,
-                    16, 1, 14, 4, 1,
-                    0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0
-            };
-        } else {
-            chars = " абвгдежзийклмнопрстуфхцчшщъыьэюя";
-            wordsAll.add("балда");
-            space = new byte[] {
-                    0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0,
-                    2, 1, 12, 5, 1,
-                    0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0
-            };
-        }
+        isRandom = intent.getBooleanExtra("isRandom", false);
 
         AssetManager myAssetManager = getResources().getAssets();
         nativDicInit(myAssetManager, lang);
 
+        String startWord = "";
+        if (lang == 1) {
+            chars = " abcdefghijklmnopqrstuvwxyz";
+            startWord = "panda";
+        } else {
+            chars = " абвгдежзийклмнопрстуфхцчшщъыьэюя";
+            startWord = "балда";
+//            space = new byte[] {
+//                    0, 0, 0, 0, 0,
+//                    0, 0, 0, 0, 0,
+//                    2, 1, 12, 5, 1,
+//                    0, 0, 0, 0, 0,
+//                    0, 0, 0, 0, 0
+//            };
+        }
+
+        if (isRandom) {
+            Random r = new Random();
+            int coontWordLen5 = nativCountWordLen5();
+            int randIndex = r.nextInt(coontWordLen5 - 1);
+            startWord = hashToString(nativRandomWord(randIndex));
+        } else {
+            startWord = intent.getStringExtra("startWord");
+        }
+
+        wordsAll.add(startWord);
+
+        space = new byte[25];
+        for (int i = 0; i < 5; i++) {
+            space[i + 10] = (byte) chars.indexOf(startWord.charAt(i));
+        }
 
         refresh();
     }
@@ -88,8 +100,11 @@ public class MainActivity extends Activity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.help:
+                _cancel();
+                trackInit();
+                trackIter();
                 long[] longArr = nativHelp();
-                Log.d("BaldaNDK", String.valueOf(longArr[0]));
+                Log.d("BaldaNDK", hashToString(longArr[0]));
                 // TODO
                 return true;
             case R.id.miss:
@@ -137,6 +152,10 @@ public class MainActivity extends Activity {
     private native boolean nativFindWord(byte[] chars);
 
     private native long[] nativHelp();
+
+    private native long nativRandomWord(int index);
+
+    private native int nativCountWordLen5();
 
     private String hashToString(long hash) {
 //        return String.valueOf(hash);
@@ -531,6 +550,5 @@ public class MainActivity extends Activity {
         }
         return scoreAndroid;
     }
-
 
 }

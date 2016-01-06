@@ -2,12 +2,13 @@
 #include <iostream>
 #include <jni.h>
 #include <fstream>
-#include <math.h>
 #include <android/log.h>
 #include <android/asset_manager.h>
 #include <android/asset_manager_jni.h>
 #include <string>
 #include <sstream>
+#include <stdio.h>
+#include <stdlib.h>
 #include "Dic.h"
 
 using namespace std;
@@ -76,26 +77,15 @@ void Dic::init(JNIEnv * env, jobject assetManager, jint lang) {
         dic9_more = new long long[dic9_more_len];
         AAsset_read(asset, dic9_more, sizeof(long long) * dic9_more_len);
 
+        AAsset_read(asset, &longVar, sizeof(long long));
+        dictionary_5_len = (int)longVar;
+        dictionary_5 = new long long[dictionary_5_len];
+        AAsset_read(asset, dictionary_5, sizeof(long long) * dictionary_5_len);
+
         AAsset_close(asset);
     }
 
-    std::string number; std::stringstream strstream;
-
-    //strstream << dictionary_len; strstream >> number;
-    //strstream << dic9_more_len; strstream >> number;
     __android_log_print(ANDROID_LOG_DEBUG, "BaldaNDK", "Dictionary init");
-//    cout << "Dic.Dic() dic2_more_len = " << dic2_more_len << endl;
-//    cout << "Dic.Dic() dic3_more_len = " << dic3_more_len << endl;
-//    cout << "Dic.Dic() dic4_more_len = " << dic4_more_len << endl;
-//    cout << "Dic.Dic() dic5_more_len = " << dic5_more_len << endl;
-//    cout << "Dic.Dic() dic6_more_len = " << dic6_more_len << endl;
-//    cout << "Dic.Dic() dic7_more_len = " << dic7_more_len << endl;
-//    cout << "Dic.Dic() dic8_more_len = " << dic8_more_len << endl;
-//    cout << "Dic.Dic() dic9_more_len = " << dic9_more_len << endl;
-
-    //for (int i = 0; i < 10; i++) {
-    //	cout << dic2_more[i] << endl;
-    //}
 }
 
 Dic::~Dic() {
@@ -108,6 +98,7 @@ Dic::~Dic() {
     delete [] dic7_more;
     delete [] dic8_more;
     delete [] dic9_more;
+    delete [] dictionary_5;
     __android_log_print(ANDROID_LOG_ERROR, "BaldaNDK", "~Dic()");
 }
 
@@ -171,4 +162,12 @@ bool Dic::findPart(int chars_len, unsigned char *chars) {
         default:
             return false;
     }
+}
+
+long long Dic::randomWord(jint index) {
+    return dictionary_5[index];
+}
+
+jint Dic::countWordLen5() {
+    return dictionary_5_len;
 }

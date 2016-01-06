@@ -80,7 +80,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Случайное"
-                        android:id="@+id/radioButton"
+                        android:id="@+id/radioButtonRandomWord"
                         android:layout_gravity="center_horizontal"
                         android:checked="true" />
 

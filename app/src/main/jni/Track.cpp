@@ -14,6 +14,8 @@ Track::~Track() {
 
 void Track::init(long long * hashWords, int hashWords_len) {
     wordsAnswer.clear();
+    wordsHelp.clear();
+    //wordsHelp.push_back(555L);
     for (int i = 0; i < hashWords_len; i++) {
         wordsAnswer.push_back(hashWords[i]);
     }
@@ -52,6 +54,9 @@ void Track::findTrack(unsigned char * arrData, int * coordinatesWord, int coordi
                     // если слово не использовали в ответах
                     long long hash = dic.charsToHash(coordinatesWord_len, chars);
                     if (!vectorSearch(&wordsAnswer, hash)) {
+                        if (&wordsHelp, hash) {
+                            wordsHelp.push_back(hash);
+                        }
                         word = hash;
                         charValue = arrData[ins];
                         charIndex = ins;
@@ -172,4 +177,8 @@ void Track::iter(unsigned char * arr, int arr_len) {
         }
     }
     //return new Word(gWord, gCharString, gCharInt);
+}
+
+std::vector<long long> Track::getWordsHelp() {
+    return wordsHelp;
 }

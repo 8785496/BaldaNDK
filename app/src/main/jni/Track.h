@@ -15,12 +15,15 @@ public:
     long long getWord();
     long long getCharValue();
     long long getCharIndex();
+    std::vector<long long> getWordsHelp();
     Dic dic;
 private:
     bool arraySearch(int * coordinatesWord, int coordinatesWord_len, int cur);
     bool vectorSearch(std::vector<long long> * vecs, long long vec);
 
     std::vector<long long> wordsAnswer;
+    std::vector<long long> wordsHelp;
+
     int lastWord_len = 0;
     unsigned char charValue;
     int charIndex;

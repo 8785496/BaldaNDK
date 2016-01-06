@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 
 public class StartActivity extends Activity {
@@ -16,6 +17,7 @@ public class StartActivity extends Activity {
     String[] lang = {"Русский", "Английский"};
     private Spinner spinnerComplexity;
     private Spinner spinnerLang;
+    private boolean isRandom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +39,23 @@ public class StartActivity extends Activity {
         spinnerLang = (Spinner) findViewById(R.id.spinnerLang);
         spinnerLang.setAdapter(adapterLang);
         spinnerLang.setSelection(0);
+
+        // isRandom
+        RadioButton radioButton = (RadioButton) findViewById(R.id.radioButtonRandomWord);
+        isRandom = radioButton.isChecked();
     }
 
     public void startGame(View view) {
         Intent intent = new Intent(StartActivity.this, MainActivity.class);
         intent.putExtra("lang", spinnerLang.getSelectedItemPosition());
         intent.putExtra("complexity", spinnerLang.getSelectedItemPosition());
-        intent.putExtra("startWord", ""); // TODO
+        intent.putExtra("isRandom", isRandom);
+        if (!isRandom) {
+            // TODO
+            intent.putExtra("startWord", "балда");
+        }
         startActivity(intent);
     }
-
 
     public void records(View view) {
         startActivity(new Intent(this, RecordActivity.class));
@@ -66,8 +75,6 @@ public class StartActivity extends Activity {
 
     public void logout(View view) {
     }
-
-
 
     public void setWord(View view) {
         Log.d("BaldaNDK", "set word");
