@@ -93,9 +93,9 @@ public class StartActivity extends FragmentActivity
     // Fragment.onAttach() callback, which it uses to call the following methods
     // defined by the NoticeDialogFragment.NoticeDialogListener interface
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
+    public void onDialogPositiveClick(DialogFragment dialog, String param) {
         // User touched the dialog's positive button
-
+        Log.d("BaldaNDK", param);
     }
 
     @Override
