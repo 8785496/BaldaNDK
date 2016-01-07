@@ -19,7 +19,6 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class MainActivity extends Activity {
-    //private String chars = " абвгдежзийклмнопрстуфхцчшщъыьэюя";
     private String chars;
     private byte[] space;
     private ArrayList<String> wordsAll = new ArrayList<>();
@@ -31,9 +30,9 @@ public class MainActivity extends Activity {
     int lang;
     boolean isRandom;
     boolean isHelp = false;
-    int scorePlayer;
-    int scoreAndroid;
     int complexity;
+//    int scorePlayer;
+//    int scoreAndroid;
 
     static {
         System.loadLibrary("balda");
@@ -141,6 +140,21 @@ public class MainActivity extends Activity {
 //        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
 //            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
 //        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode > 0) {
+            Log.d("BaldaNDK", "resultCode - " + String.valueOf(resultCode));
+            space[requestCode] = (byte) resultCode;
+            boolTrack = true;
+            coordinates.clear();
+            insertCharIndex = requestCode;
+            refresh();
+        } else {
+            Log.d("BaldaNDK", "RESULT_CANCELED");
+        }
     }
 
     private native void nativDestruct();
@@ -346,21 +360,6 @@ public class MainActivity extends Activity {
                     startActivityForResult(intent, requestCode);
                 }
             }
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode > 0) {
-            Log.d("BaldaNDK", "resultCode - " + String.valueOf(resultCode));
-            space[requestCode] = (byte) resultCode;
-            boolTrack = true;
-            coordinates.clear();
-            insertCharIndex = requestCode;
-            refresh();
-        } else {
-            Log.d("BaldaNDK", "RESULT_CANCELED");
         }
     }
 

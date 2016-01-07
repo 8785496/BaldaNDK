@@ -1,8 +1,12 @@
 package es.hol.chernyshov.balda;
 
 import android.app.Activity;
+import android.support.v4.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+
+
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,11 +16,9 @@ import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 
-public class StartActivity extends Activity {
-    //String[] data = {"2", "3", "4", "5", "6", "7", "8", "9", "10"};
-//    private String[] data = {"Минимальная", "Средняя", "Максимальная"};
+public class StartActivity extends FragmentActivity
+        implements NoticeDialogFragment.NoticeDialogListener {
     private int[] complexity = {3, 5, 10};
-//    private String[] lang = {"Русский", "Английский"};
     private Spinner spinnerComplexity;
     private Spinner spinnerLang;
     private RadioButton radioButton;
@@ -27,7 +29,6 @@ public class StartActivity extends Activity {
         setContentView(R.layout.activity_start);
 
         // Complexity
-        //ArrayAdapter<String> adapterComplexity = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, data);
         ArrayAdapter<CharSequence> adapterComplexity = ArrayAdapter.createFromResource(this,
                 R.array.complexity, android.R.layout.simple_spinner_item);
         adapterComplexity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -37,7 +38,6 @@ public class StartActivity extends Activity {
         spinnerComplexity.setSelection(1);
 
         // Lang
-        //ArrayAdapter<String> adapterLang = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, lang);
         ArrayAdapter<CharSequence> adapterLang = ArrayAdapter.createFromResource(this,
                 R.array.languages, android.R.layout.simple_spinner_item);
         adapterLang.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -83,7 +83,25 @@ public class StartActivity extends Activity {
     }
 
     public void login(View view) {
-        startActivity(new Intent(this, LoginActivity.class));
+        //startActivity(new Intent(this, LoginActivity.class));
+        // Create an instance of the dialog fragment and show it
+        DialogFragment dialog = new NoticeDialogFragment();
+        dialog.show(getSupportFragmentManager(), "NoticeDialogFragment");
+    }
+
+    // The dialog fragment receives a reference to this Activity through the
+    // Fragment.onAttach() callback, which it uses to call the following methods
+    // defined by the NoticeDialogFragment.NoticeDialogListener interface
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        // User touched the dialog's positive button
+
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        // User touched the dialog's negative button
+
     }
 
     public void logout(View view) {
@@ -93,7 +111,29 @@ public class StartActivity extends Activity {
         Log.d("BaldaNDK", "set word");
     }
 
-
+//    @Override
+//    public Dialog onCreateDialog(Bundle savedInstanceState) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//        // Get the layout inflater
+//        LayoutInflater inflater = getActivity().getLayoutInflater();
+//
+//        // Inflate and set the layout for the dialog
+//        // Pass null as the parent view because its going in the dialog layout
+//        builder.setView(inflater.inflate(R.layout.dialog_signin, null))
+//                // Add action buttons
+//                .setPositiveButton(R.string.signin, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        // sign in the user ...
+//                    }
+//                })
+//                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        LoginDialogFragment.this.getDialog().cancel();
+//                    }
+//                });
+//        return builder.create();
+//    }
 
 
 }
