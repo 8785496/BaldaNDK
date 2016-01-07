@@ -30,7 +30,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Сохранить рекорд анонимно"
+        android:text="@string/action_save_record_anonymously"
         android:id="@+id/button5"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="21dp"
@@ -40,7 +40,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Регистрация"
+        android:text="@string/action_registration"
         android:id="@+id/button6"
         android:layout_marginTop="24dp"
         android:layout_below="@+id/button5"
@@ -50,7 +50,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Вход"
+        android:text="@string/action_login"
         android:id="@+id/button7"
         android:layout_marginTop="26dp"
         android:layout_below="@+id/button6"

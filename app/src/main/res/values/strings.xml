@@ -1,33 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Балда RUS ENG</string>
+    <string name="app_name">Balda RUS ENG</string>
 
-    <string name="title_activity_main">Балда</string>
-    <string name="title_activity_start">Балда RUS ENG</string>
-    <string name="title_activity_result">Счет</string>
-    <string name="title_activity_registration">Регистрация</string>
-    <string name="title_activity_records">Рекорды</string>
-    <string name="title_activity_my_records">Мои рекорды</string>
-    <string name="title_activity_login">Вход</string>
+    <string name="action_login">Login</string>
+    <string name="action_step">Step</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_registration">Registration</string>
+    <string name="action_help">Help</string>
+    <string name="action_miss">Miss</string>
+    <string name="action_logout">Logout</string>
+    <string name="action_my_records">My records</string>
+    <string name="action_records">Records</string>
+    <string name="action_start">Start game</string>
+    <string name="action_save_record">Save record</string>
+    <string name="action_save_record_anonymously">Save record anonymously</string>
 
-    <string name="action_records">Рекорды</string>
-    <string name="action_my_records">Мои рекорды</string>
-    <string name="action_login">Вход</string>
-    <string name="action_logout">Выход</string>
-    <string name="action_step">Ход</string>
-    <string name="action_cancel">Отмена</string>
-    <string name="action_registration">Регистрирация</string>
-    <string name="action_help">Помощь</string>
-    <string name="action_miss">Пропустить ход</string>
-    <string name="action_start">Начать игру</string>
+    <string name="label_yandex"><a href="http://api.yandex.ru/dictionary/">API Yandex.Dictionary</a></string>
 
-    <string name="label_yandex">Реализовано с помощью сервиса <a href="http://api.yandex.ru/dictionary/">API Яндекс.Словарь</a></string>
-    <string name="label_complexity">Сложность</string>
-    <string name="label_lang">Язык</string>
-    <string name="label_name">Имя</string>
-    <string name="label_password">Пароль</string>
-    <string name="label_repeat_password">Повторите пароль</string>
-
-    <string name="error_word_not_found">Слово "%s" не найдено</string>
-    <string name="error_server">Ошибка сервера</string>
+    <string name="error_word_not_found">Translate "%s" not found</string>
+    <string name="error_server">Server error</string>
+    <string name="label_complexity">Complexity</string>
+    <string name="label_lang">Language</string>
+    <string name="label_name">Name</string>
+    <string name="label_password">Password</string>
+    <string name="label_repeat_password">Repeat password</string>
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_start">Balda RUS ENG</string>
+    <string name="title_activity_main">Balda</string>
+    <string name="title_activity_result">Score</string>
+    <string name="title_activity_registration">Registration</string>
+    <string name="title_activity_records">Records</string>
+    <string name="title_activity_my_records">My records</string>
+    <string-array name="languages">
+        <item>Russian</item>
+        <item>English</item>
+    </string-array>
+    <string-array name="complexity">
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
+    </string-array>
 </resources>

@@ -46,6 +46,12 @@ public class ResultActivity extends Activity {
         String text = String.format("%1$s : %2$s", intent.getIntExtra("scorePlayer", 0), intent.getIntExtra("scoreAndroid", 0));
         textView.setText(text);
 
+        boolean isHelp = intent.getBooleanExtra("isHelp", false);
+        if (isHelp) {
+            // TODO
+        } else {
+
+        }
 //        TextView textView3 = (TextView) findViewById(R.id.textView3);
 //        textView3.setText(myPreferences.getString("username", "Player"));
     }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Балда RUS ENG</string>
+    <string name="action_step">Ход</string>
+    <string name="action_cancel">Отмена</string>
+    <string name="action_help">Помощь</string>
+    <string name="action_login">Вход</string>
+    <string name="action_logout">Выход</string>
+    <string name="action_miss">Пропустить ход</string>
+    <string name="action_my_records">Мои рекорды</string>
+    <string name="action_records">Рекорды</string>
+    <string name="action_registration">Регистрирация</string>
+    <string name="action_start">Начать игру</string>
+    <string name="error_server">Ошибка сервера</string>
+    <string name="error_word_not_found">Перевод слова "%s" не найден</string>
+    <string name="label_complexity">Сложность</string>
+    <string name="label_lang">Язык</string>
+    <string name="label_name">Имя</string>
+    <string name="label_password">Пароль</string>
+    <string name="label_repeat_password">Повторите пароль</string>
+    <string name="label_yandex">Реализовано с помощью сервиса <a href="http://api.yandex.ru/dictionary/">API Яндекс.Словарь</a></string>
+    <string name="title_activity_login">Вход</string>
+    <string name="title_activity_main">Балда</string>
+    <string name="title_activity_start">Балда RUS ENG</string>
+    <string name="title_activity_my_records">Мои рекорды</string>
+    <string name="title_activity_records">Рекорды</string>
+    <string name="title_activity_registration">Регистрация</string>
+    <string name="title_activity_result">Счет</string>
+    <string-array name="languages">
+        <item>Русский</item>
+        <item>Английский</item>
+    </string-array>
+    <string-array name="complexity">
+        <item>Простая</item>
+        <item>Средняя</item>
+        <item>Максимальная</item>
+    </string-array>
+    <string name="action_save_record">Сохранить рекорд</string>
+    <string name="action_save_record_anonymously">Сохранить рекорд анонимно</string>
+</resources>

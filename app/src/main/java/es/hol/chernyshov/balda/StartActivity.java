@@ -13,11 +13,13 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 
 public class StartActivity extends Activity {
-    String[] data = {"2", "3", "4", "5", "6", "7", "8", "9", "10"};
-    String[] lang = {"Русский", "Английский"};
+    //String[] data = {"2", "3", "4", "5", "6", "7", "8", "9", "10"};
+//    private String[] data = {"Минимальная", "Средняя", "Максимальная"};
+    private int[] complexity = {3, 5, 10};
+//    private String[] lang = {"Русский", "Английский"};
     private Spinner spinnerComplexity;
     private Spinner spinnerLang;
-    private boolean isRandom;
+    private RadioButton radioButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,15 +27,19 @@ public class StartActivity extends Activity {
         setContentView(R.layout.activity_start);
 
         // Complexity
-        ArrayAdapter<String> adapterComplexity = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, data);
+        //ArrayAdapter<String> adapterComplexity = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, data);
+        ArrayAdapter<CharSequence> adapterComplexity = ArrayAdapter.createFromResource(this,
+                R.array.complexity, android.R.layout.simple_spinner_item);
         adapterComplexity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinnerComplexity = (Spinner) findViewById(R.id.spinner);
         spinnerComplexity.setAdapter(adapterComplexity);
-        spinnerComplexity.setSelection(3);
+        spinnerComplexity.setSelection(1);
 
         // Lang
-        ArrayAdapter<String> adapterLang = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, lang);
+        //ArrayAdapter<String> adapterLang = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, lang);
+        ArrayAdapter<CharSequence> adapterLang = ArrayAdapter.createFromResource(this,
+                R.array.languages, android.R.layout.simple_spinner_item);
         adapterLang.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinnerLang = (Spinner) findViewById(R.id.spinnerLang);
@@ -41,18 +47,25 @@ public class StartActivity extends Activity {
         spinnerLang.setSelection(0);
 
         // isRandom
-        RadioButton radioButton = (RadioButton) findViewById(R.id.radioButtonRandomWord);
-        isRandom = radioButton.isChecked();
+        radioButton = (RadioButton) findViewById(R.id.radioButtonRandomWord);
     }
 
     public void startGame(View view) {
+        boolean isRandom = radioButton.isChecked();
+        int lang = spinnerLang.getSelectedItemPosition();
+        int _complexity = complexity[spinnerComplexity.getSelectedItemPosition()];
+
         Intent intent = new Intent(StartActivity.this, MainActivity.class);
-        intent.putExtra("lang", spinnerLang.getSelectedItemPosition());
-        intent.putExtra("complexity", spinnerLang.getSelectedItemPosition());
+        intent.putExtra("lang", lang);
+        intent.putExtra("complexity", _complexity);
         intent.putExtra("isRandom", isRandom);
         if (!isRandom) {
             // TODO
-            intent.putExtra("startWord", "балда");
+            if (lang == 1) {
+                intent.putExtra("startWord", "panda");
+            } else {
+                intent.putExtra("startWord", "балда");
+            }
         }
         startActivity(intent);
     }

@@ -12,7 +12,8 @@ Track::~Track() {
     //dic.~Dic();
 }
 
-void Track::init(long long * hashWords, int hashWords_len) {
+void Track::init(long long * hashWords, int hashWords_len, int _complexity) {
+    complexity = _complexity;
     wordsAnswer.clear();
     wordsHelp.clear();
     //wordsHelp.push_back(555L);
@@ -66,7 +67,7 @@ void Track::findTrack(unsigned char * arrData, int * coordinatesWord, int coordi
             }
         }
         // проверяем нужно ли продолжать искать слова
-        if (!dic.findPart(coordinatesWord_len, chars)) {
+        if (coordinatesWord_len == complexity || !dic.findPart(coordinatesWord_len, chars)) {
             delete[] chars;
             delete[] coordinatesWord_new;
             return;

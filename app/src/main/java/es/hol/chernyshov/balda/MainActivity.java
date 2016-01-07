@@ -30,8 +30,10 @@ public class MainActivity extends Activity {
     int insertCharIndex = -1;
     int lang;
     boolean isRandom;
+    boolean isHelp = false;
     int scorePlayer;
     int scoreAndroid;
+    int complexity;
 
     static {
         System.loadLibrary("balda");
@@ -45,6 +47,7 @@ public class MainActivity extends Activity {
         Intent intent = getIntent();
         lang = intent.getIntExtra("lang", 0);
         isRandom = intent.getBooleanExtra("isRandom", false);
+        complexity = intent.getIntExtra("complexity", 10);
 
         AssetManager myAssetManager = getResources().getAssets();
         nativDicInit(myAssetManager, lang);
@@ -97,11 +100,10 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
         switch (item.getItemId()) {
             case R.id.help:
                 _cancel();
-                trackInit();
+                trackInit(10);
                 trackIter();
                 long[] longArr = nativHelp();
                 String[] strArr = new String[longArr.length];
@@ -111,7 +113,7 @@ public class MainActivity extends Activity {
                 Intent intent = new Intent(this, HelpActivity.class);
                 intent.putExtra("wordsHelp", strArr);
                 startActivity(intent);
-                //Log.d("BaldaNDK", hashToString(longArr[0]));
+                isHelp = true;
                 return true;
             case R.id.miss:
                 miss();
@@ -145,7 +147,7 @@ public class MainActivity extends Activity {
 
     private native void nativDicInit(Object obj, int lang);
 
-    private native void nativTrackInit(long[] hashWords);
+    private native void nativTrackInit(long[] hashWords, int complexity);
 
     private native void nativTrackIter(byte[] space);
 
@@ -193,13 +195,13 @@ public class MainActivity extends Activity {
         return bytes;
     }
 
-    public void trackInit(/*View view*/) {
+    public void trackInit(int complexity) {
         int n = wordsAll.size();
         long[] words = new long[n];
         for(int i = 0; i < n; i++){
             words[i] = stringToHash(wordsAll.get(i));
         }
-        nativTrackInit(words);
+        nativTrackInit(words, complexity);
     }
 
     public void trackIter(/*View view*/) {
@@ -480,7 +482,7 @@ public class MainActivity extends Activity {
                 insertCharIndex = -1;
                 wordsAll.add(word);
                 wordsUser.add(word);
-                trackInit();
+                trackInit(complexity);
                 trackIter();
                 getWord();
                 if (endGame()) {
@@ -488,6 +490,7 @@ public class MainActivity extends Activity {
                     Intent intent = new Intent(MainActivity.this, ResultActivity.class);
                     intent.putExtra("scorePlayer", getScorePlayer());
                     intent.putExtra("scoreAndroid", getScoreAndroid());
+                    intent.putExtra("isHelp", isHelp);
                     //intent.putExtra("lang", 1);
                     startActivity(intent);
                     finish();
@@ -521,7 +524,7 @@ public class MainActivity extends Activity {
 
     private void miss() {
         _cancel();
-        trackInit();
+        trackInit(complexity);
         trackIter();
         getWord();
         refresh();

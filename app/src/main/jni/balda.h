@@ -39,7 +39,7 @@ JNIEXPORT void JNICALL Java_es_hol_chernyshov_balda_MainActivity_nativDicInit
  * Signature: ([J)V
  */
 JNIEXPORT void JNICALL Java_es_hol_chernyshov_balda_MainActivity_nativTrackInit
-  (JNIEnv *, jobject, jlongArray);
+  (JNIEnv *, jobject, jlongArray, jint);
 
 /*
  * Class:     es_hol_chernyshov_balda_MainActivity
