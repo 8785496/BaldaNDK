@@ -24,6 +24,10 @@
     <string name="label_name">Name</string>
     <string name="label_password">Password</string>
     <string name="label_repeat_password">Repeat password</string>
+    <string name="label_start_word">Start word</string>
+    <string name="label_random_word">Random word</string>
+    <string name="label_choose_word">Choose word</string>
+
     <string name="title_activity_login">Login</string>
     <string name="title_activity_start">Balda RUS ENG</string>
     <string name="title_activity_main">Balda</string>

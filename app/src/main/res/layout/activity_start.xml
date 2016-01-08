@@ -68,7 +68,7 @@
                     android:minHeight="40dp"
                     android:layout_weight="1"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Начальное слово" />
+                    android:text="@string/label_start_word" />
 
                 <RadioGroup
                     android:layout_width="wrap_content"
@@ -79,7 +79,7 @@
                     <RadioButton
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Случайное"
+                        android:text="@string/label_random_word"
                         android:id="@+id/radioButtonRandomWord"
                         android:layout_gravity="center_horizontal"
                         android:checked="true" />
@@ -87,7 +87,7 @@
                     <RadioButton
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Выбрать слово"
+                        android:text="@string/label_choose_word"
                         android:id="@+id/radioButton2"
                         android:layout_gravity="center_horizontal"
                         android:checked="false"
@@ -96,71 +96,42 @@
 
 
             </TableRow>
-
-            <TableRow
+            <Button
+                android:id="@+id/btnStart"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <Button
-                    android:id="@+id/btnStart"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="startGame"
-                    android:text="@string/action_start" />
-            </TableRow>
-
-            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="startGame"
+                android:text="@string/action_start" />
+            <Button
+                android:id="@+id/btnRecords"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <Button
-                    android:id="@+id/btnRecords"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="records"
-                    android:text="@string/action_records" />
-            </TableRow>
-
-            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="records"
+                android:text="@string/action_records" />
+            <Button
+                android:id="@+id/btnMyRecords"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <Button
-                    android:id="@+id/btnMyRecords"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="myRecords"
-                    android:text="@string/action_my_records" />
-            </TableRow>
-
-            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="myRecords"
+                android:text="@string/action_my_records" />
+            <Button
+                android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="login"
+                android:text="@string/action_login" />
 
-                <Button
-                    android:id="@+id/btnLogin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="login"
-                    android:text="@string/action_login" />
-            </TableRow>
-
-            <TableRow
+            <Button
+                android:id="@+id/btnLogout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <Button
-                    android:id="@+id/btnLogout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="logout"
-                    android:text="@string/action_logout" />
-            </TableRow>
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="logout"
+                android:text="@string/action_logout" />
 
             <Button
                 android:id="@+id/btnRegistr"

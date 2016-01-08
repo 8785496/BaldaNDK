@@ -7,12 +7,14 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 
 // http://developer.android.com/intl/ru/guide/topics/ui/dialogs.html
-public class NoticeDialogFragment extends DialogFragment {
+public class LoginDialogFragment extends DialogFragment {
 
     public interface NoticeDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog, String param);
+        public void onDialogPositiveClick(DialogFragment dialog, String username, String password);
         public void onDialogNegativeClick(DialogFragment dialog);
     }
 
@@ -32,33 +34,24 @@ public class NoticeDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        //builder.setMessage("Dialog")
-        builder.setView(inflater.inflate(R.layout.activity_login, null))
+        final LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View layoutView = inflater.inflate(R.layout.dialog_login, null);
+        builder.setView(layoutView)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        // Send the positive button event back to the host activity
-                        //return;
-
-
-                        mListener.onDialogPositiveClick(NoticeDialogFragment.this, "hello");
+                        EditText editUsername = (EditText) layoutView.findViewById(R.id.editUsername);
+                        EditText editPassword = (EditText) layoutView.findViewById(R.id.editPassword);
+                        String username = editUsername.getText().toString();
+                        String password = editPassword.getText().toString();
+                        mListener.onDialogPositiveClick(LoginDialogFragment.this, username, password);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // Send the negative button event back to the host activity
-                        mListener.onDialogNegativeClick(NoticeDialogFragment.this);
-                    }
-                })
-                .setNeutralButton("Login", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // Send the positive button event back to the host activity
-                        //return;
-                        //mListener.onDialogPositiveClick(NoticeDialogFragment.this, "hello");
+                        mListener.onDialogNegativeClick(LoginDialogFragment.this);
                     }
                 });
         return builder.create();
     }
-
 }

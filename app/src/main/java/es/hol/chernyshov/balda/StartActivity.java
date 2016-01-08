@@ -1,6 +1,8 @@
 package es.hol.chernyshov.balda;
 
-import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v4.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,25 +10,46 @@ import android.os.Bundle;
 
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class StartActivity extends FragmentActivity
-        implements NoticeDialogFragment.NoticeDialogListener {
+        implements LoginDialogFragment.NoticeDialogListener {
+
     private int[] complexity = {3, 5, 10};
     private Spinner spinnerComplexity;
     private Spinner spinnerLang;
     private RadioButton radioButton;
+    private SharedPreferences myPreferences;
+    private String username;
+    private String password;
+    private boolean isAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+        myPreferences = getSharedPreferences("mySettings", Context.MODE_PRIVATE);
+        isAuth = myPreferences.contains("username");
+        username = myPreferences.getString("username", "Player");
+        password = myPreferences.getString("password", "");
 
         // Complexity
         ArrayAdapter<CharSequence> adapterComplexity = ArrayAdapter.createFromResource(this,
@@ -48,6 +71,17 @@ public class StartActivity extends FragmentActivity
 
         // isRandom
         radioButton = (RadioButton) findViewById(R.id.radioButtonRandomWord);
+
+        init();
+    }
+
+    private void init() {
+        if (isAuth) {
+
+        } else {
+            Button btnMyRecords = (Button) findViewById(R.id.btnMyRecords);
+            btnMyRecords.setVisibility(View.GONE);
+        }
     }
 
     public void startGame(View view) {
@@ -83,19 +117,13 @@ public class StartActivity extends FragmentActivity
     }
 
     public void login(View view) {
-        //startActivity(new Intent(this, LoginActivity.class));
-        // Create an instance of the dialog fragment and show it
-        DialogFragment dialog = new NoticeDialogFragment();
-        dialog.show(getSupportFragmentManager(), "NoticeDialogFragment");
+        DialogFragment dialog = new LoginDialogFragment();
+        dialog.show(getSupportFragmentManager(), "LoginDialogFragment");
     }
 
-    // The dialog fragment receives a reference to this Activity through the
-    // Fragment.onAttach() callback, which it uses to call the following methods
-    // defined by the NoticeDialogFragment.NoticeDialogListener interface
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog, String param) {
-        // User touched the dialog's positive button
-        Log.d("BaldaNDK", param);
+    public void onDialogPositiveClick(DialogFragment dialog, String username, String password) {
+        new UserAuthTask().execute(username, password);
     }
 
     @Override
@@ -105,35 +133,72 @@ public class StartActivity extends FragmentActivity
     }
 
     public void logout(View view) {
+        SharedPreferences.Editor editor = myPreferences.edit();
+        editor.remove("username");
+        editor.remove("password");
+        editor.apply();
     }
 
     public void setWord(View view) {
         Log.d("BaldaNDK", "set word");
     }
 
-//    @Override
-//    public Dialog onCreateDialog(Bundle savedInstanceState) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        // Get the layout inflater
-//        LayoutInflater inflater = getActivity().getLayoutInflater();
-//
-//        // Inflate and set the layout for the dialog
-//        // Pass null as the parent view because its going in the dialog layout
-//        builder.setView(inflater.inflate(R.layout.dialog_signin, null))
-//                // Add action buttons
-//                .setPositiveButton(R.string.signin, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        // sign in the user ...
-//                    }
-//                })
-//                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        LoginDialogFragment.this.getDialog().cancel();
-//                    }
-//                });
-//        return builder.create();
-//    }
+    private class UserAuthTask extends AsyncTask<String, Void, String> {
+        String resultJson = "";
 
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                URL url = new URL("http://chernyshov.hol.es/user/exist");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setReadTimeout(10000);
+                urlConnection.setConnectTimeout(15000);
+                urlConnection.setRequestMethod("POST");
+                OutputStream outputStream = urlConnection.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                JSONObject data = new JSONObject();
+                data.put("username", params[0]);
+                data.put("password", params[1]);
+                Log.d("BaldaNDK", data.toString());
+                writer.write(data.toString());
+                writer.flush();
+                writer.close();
+                outputStream.close();
+                urlConnection.connect();
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line);
+                }
+                resultJson = buffer.toString();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return resultJson;
+        }
+
+        @Override
+        protected void onPostExecute(String strJson) {
+            super.onPostExecute(strJson);
+            Log.d("BaldaNDK", strJson);
+            try {
+                JSONObject data = new JSONObject(strJson);
+                Context context = getApplicationContext();
+                int duration = Toast.LENGTH_SHORT;
+                CharSequence text;
+                if (data.has("code") && data.getInt("code") == 1) {
+                    text = "Вход выполнен";
+                } else {
+                    text = "Не верный логин или пароль";
+                }
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }

@@ -37,4 +37,7 @@
     </string-array>
     <string name="action_save_record">Сохранить рекорд</string>
     <string name="action_save_record_anonymously">Сохранить рекорд анонимно</string>
+    <string name="label_start_word">Начальное слово</string>
+    <string name="label_random_word">Случайное</string>
+    <string name="label_choose_word">Выбрать слово</string>
 </resources>
