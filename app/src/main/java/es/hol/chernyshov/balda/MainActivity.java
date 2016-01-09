@@ -58,13 +58,6 @@ public class MainActivity extends Activity {
         } else {
             chars = " абвгдежзийклмнопрстуфхцчшщъыьэюя";
             startWord = "балда";
-//            space = new byte[] {
-//                    0, 0, 0, 0, 0,
-//                    0, 0, 0, 0, 0,
-//                    2, 1, 12, 5, 1,
-//                    0, 0, 0, 0, 0,
-//                    0, 0, 0, 0, 0
-//            };
         }
 
         if (isRandom) {
@@ -78,7 +71,13 @@ public class MainActivity extends Activity {
 
         wordsAll.add(startWord);
 
-        space = new byte[25];
+        space = new byte[/*25*/] {
+                2, 1, 12, 5, 1,
+                2, 1, 12, 5, 1,
+                2, 1, 12, 5, 1,
+                2, 1, 12, 5, 1,
+                2, 1, 12, 5, 0
+        };
         for (int i = 0; i < 5; i++) {
             space[i + 10] = (byte) chars.indexOf(startWord.charAt(i));
         }
@@ -134,12 +133,6 @@ public class MainActivity extends Activity {
         super.onConfigurationChanged(newConfig);
         setContentView(R.layout.activity_main);
         refresh();
-        // Проверяем ориентацию экрана
-//        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
-//        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-//            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
-//        }
     }
 
     @Override
@@ -180,8 +173,6 @@ public class MainActivity extends Activity {
     private native int nativCountWordLen5();
 
     private String hashToString(long hash) {
-//        return String.valueOf(hash);
-
         String str = "";
         do {
             int dig = (int) (hash % 33);
@@ -490,7 +481,6 @@ public class MainActivity extends Activity {
                     intent.putExtra("scorePlayer", getScorePlayer());
                     intent.putExtra("scoreAndroid", getScoreAndroid());
                     intent.putExtra("isHelp", isHelp);
-                    //intent.putExtra("lang", 1);
                     startActivity(intent);
                     finish();
                 }
@@ -527,6 +517,15 @@ public class MainActivity extends Activity {
         trackIter();
         getWord();
         refresh();
+        if (endGame()) {
+            notification("End game!");
+            Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+            intent.putExtra("scorePlayer", getScorePlayer());
+            intent.putExtra("scoreAndroid", getScoreAndroid());
+            intent.putExtra("isHelp", isHelp);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void notification(String text) {

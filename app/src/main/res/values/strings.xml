@@ -27,6 +27,10 @@
     <string name="label_start_word">Start word</string>
     <string name="label_random_word">Random word</string>
     <string name="label_choose_word">Choose word</string>
+    <string name="label_login">Login</string>
+    <string name="label_registration">Registration</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="label_ok">Ok</string>
 
     <string name="title_activity_login">Login</string>
     <string name="title_activity_start">Balda RUS ENG</string>

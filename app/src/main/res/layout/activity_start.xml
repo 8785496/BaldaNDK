@@ -35,8 +35,6 @@
                     android:spinnerMode="dropdown" />
             </TableRow>
 
-
-
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -82,13 +80,14 @@
                         android:text="@string/label_random_word"
                         android:id="@+id/radioButtonRandomWord"
                         android:layout_gravity="center_horizontal"
-                        android:checked="true" />
+                        android:checked="true"
+                        android:onClick="setRandomWord"/>
 
                     <RadioButton
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/label_choose_word"
-                        android:id="@+id/radioButton2"
+                        android:id="@+id/radioButtonChooseWord"
                         android:layout_gravity="center_horizontal"
                         android:checked="false"
                         android:onClick="setWord"/>
@@ -96,6 +95,7 @@
 
 
             </TableRow>
+
             <Button
                 android:id="@+id/btnStart"
                 android:layout_width="match_parent"

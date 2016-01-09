@@ -15,7 +15,6 @@ public class LoginDialogFragment extends DialogFragment {
 
     public interface NoticeDialogListener {
         public void onDialogPositiveClick(DialogFragment dialog, String username, String password);
-        public void onDialogNegativeClick(DialogFragment dialog);
     }
 
     NoticeDialogListener mListener;
@@ -37,7 +36,7 @@ public class LoginDialogFragment extends DialogFragment {
         final LayoutInflater inflater = getActivity().getLayoutInflater();
         final View layoutView = inflater.inflate(R.layout.dialog_login, null);
         builder.setView(layoutView)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.label_login, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         EditText editUsername = (EditText) layoutView.findViewById(R.id.editUsername);
@@ -47,10 +46,9 @@ public class LoginDialogFragment extends DialogFragment {
                         mListener.onDialogPositiveClick(LoginDialogFragment.this, username, password);
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        mListener.onDialogNegativeClick(LoginDialogFragment.this);
-                    }
+                .setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {}
                 });
         return builder.create();
     }

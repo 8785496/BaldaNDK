@@ -67,7 +67,7 @@ public class ResultActivity extends Activity {
     }
 
     public void login(View view) {
-        startActivity(new Intent(this, LoginActivity.class));
+        //startActivity(new Intent(this, LoginActivity.class));
     }
 
     public void register(View view) {
