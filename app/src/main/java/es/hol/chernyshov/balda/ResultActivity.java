@@ -2,6 +2,8 @@ package es.hol.chernyshov.balda;
 
 import android.app.Activity;
 //import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import org.json.JSONException;
@@ -30,30 +33,56 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
-public class ResultActivity extends Activity {
+public class ResultActivity extends FragmentActivity
+        implements LoginDialogFragment.LoginDialogListener,
+        RegistrationDialogFragment.RegistrationDialogListener {
+
     private SharedPreferences myPreferences;
     private Intent intent;
+    private int scorePlayer;
+    private int scoreAndroid;
+    boolean isHelp;
+    String username;
+    String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_result);
 
         myPreferences = getSharedPreferences("mySettings", Context.MODE_PRIVATE);
+        username = myPreferences.getString("username", "Player");
+        password = myPreferences.getString("password", "");
 
         intent = getIntent();
-        TextView textView = (TextView) findViewById(R.id.txtScore);
-        String text = String.format("%1$s : %2$s", intent.getIntExtra("scorePlayer", 0), intent.getIntExtra("scoreAndroid", 0));
-        textView.setText(text);
+        scorePlayer = intent.getIntExtra("scorePlayer", 0);
+        scoreAndroid = intent.getIntExtra("scoreAndroid", 0);
+        isHelp = intent.getBooleanExtra("isHelp", false);
 
-        boolean isHelp = intent.getBooleanExtra("isHelp", false);
-        if (isHelp) {
-            // TODO
-        } else {
+        init();
 
-        }
 //        TextView textView3 = (TextView) findViewById(R.id.textView3);
 //        textView3.setText(myPreferences.getString("username", "Player"));
+    }
+
+    private void init() {
+        boolean isAuth = myPreferences.contains("username");
+
+        if (isHelp || (scorePlayer <= scoreAndroid)) {
+            setContentView(R.layout.activity_result_not_save);
+        } else if (isAuth) {
+            setContentView(R.layout.activity_result_auth);
+        } else {
+            setContentView(R.layout.activity_result);
+        }
+
+
+        TextView txtScore = (TextView) findViewById(R.id.txtScore);
+        String text = String.format("%d : %d", scorePlayer, scoreAndroid);
+        txtScore.setText(text);
+
+        TextView txtPlayers = (TextView) findViewById(R.id.txtPlayers);
+        String text1 = String.format("%s : Android", username);
+        txtPlayers.setText(text1);
     }
 
     public void save(View view) {
@@ -67,11 +96,24 @@ public class ResultActivity extends Activity {
     }
 
     public void login(View view) {
-        //startActivity(new Intent(this, LoginActivity.class));
+        DialogFragment dialog = new LoginDialogFragment();
+        dialog.show(getSupportFragmentManager(), "LoginDialogFragment");
     }
 
-    public void register(View view) {
-        startActivity(new Intent(this, RegisterActivity.class));
+    public void registration(View view) {
+        //startActivity(new Intent(this, RegisterActivity.class));
+        DialogFragment dialog = new RegistrationDialogFragment();
+        dialog.show(getSupportFragmentManager(), "RegistrationDialogFragment");
+    }
+
+    @Override
+    public void onLoginDialogPositiveClick(DialogFragment dialog, String username, String password) {
+        new UserAuthTask().execute(username, password);
+    }
+
+    @Override
+    public void onRegistrationDialogPositiveClick(DialogFragment dialog, String username, String password, String repeatPassword) {
+
     }
 
     private class SaveRecordTask extends AsyncTask<String, Void, String> {
@@ -119,8 +161,20 @@ public class ResultActivity extends Activity {
             Log.d("BaldaNDK", strJson);
             try {
                 JSONObject data = new JSONObject(strJson);
-                if (data.has("status") && data.getInt("status") == 1) {
-                    Log.d("BaldaNDK", String.valueOf(data.getInt("status")));
+                if (data.has("code") && data.getInt("code") == 1) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ResultActivity.this);
+                    builder.setTitle("Сообщение")
+                            .setMessage("Ваш рекорд успешно сохранен")
+                            .setCancelable(false)
+                            .setNegativeButton("Ok",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                            finish();
+                                        }
+                                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -164,7 +218,6 @@ public class ResultActivity extends Activity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ResultActivity.this);
                     builder.setTitle("Сообщение")
                             .setMessage("Ваш рекорд успешно сохранен")
-                            //.setIcon(R.drawable.ic_android_cat)
                             .setCancelable(false)
                             .setNegativeButton("Ok",
                                     new DialogInterface.OnClickListener() {
@@ -255,5 +308,141 @@ public class ResultActivity extends Activity {
             urlConnection.disconnect();
         }
         return data;
+    }
+
+    private class UserAuthTask extends AsyncTask<String, Void, String> {
+        String resultJson = "";
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                URL url = new URL("http://chernyshov.hol.es/user/exist");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setReadTimeout(10000);
+                urlConnection.setConnectTimeout(15000);
+                urlConnection.setRequestMethod("POST");
+                OutputStream outputStream = urlConnection.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                JSONObject data = new JSONObject();
+                data.put("username", params[0]);
+                data.put("password", params[1]);
+                Log.d("BaldaNDK", data.toString());
+                writer.write(data.toString());
+                writer.flush();
+                writer.close();
+                outputStream.close();
+                urlConnection.connect();
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line);
+                }
+                resultJson = buffer.toString();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return resultJson;
+        }
+
+        @Override
+        protected void onPostExecute(String strJson) {
+            super.onPostExecute(strJson);
+            Log.d("BaldaNDK", strJson);
+            try {
+                JSONObject data = new JSONObject(strJson);
+                Context context = getApplicationContext();
+                int duration = Toast.LENGTH_SHORT;
+                CharSequence text;
+                if (data.has("code") && data.getInt("code") == 1) {
+                    JSONObject user = data.getJSONObject("user");
+                    SharedPreferences.Editor editor = myPreferences.edit();
+                    editor.putString("username", user.getString("username"));
+                    editor.putString("password", user.getString("password"));
+                    editor.apply();
+                    text = "Вход выполнен";
+                    init();
+                } else {
+                    text = "Не верный логин или пароль";
+                }
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class RegistrationTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            HttpURLConnection urlConnection = null;
+            //JSONArray jsonRecords = null;
+            String resultJson = "";
+            try {
+                URL url = new URL("http://chernyshov.hol.es/user");
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setReadTimeout(10000);
+                urlConnection.setConnectTimeout(15000);
+                urlConnection.setRequestMethod("POST");
+                OutputStream outputStream = urlConnection.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                JSONObject data = new JSONObject();
+                JSONObject user = new JSONObject();
+                data.put("username", params[0]);
+                data.put("password", params[1]);
+                Log.d("BaldaNDK", data.toString());
+                writer.write(data.toString());
+                writer.flush();
+                writer.close();
+                outputStream.close();
+                urlConnection.connect();
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line);
+                }
+                resultJson = buffer.toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } finally {
+                urlConnection.disconnect();
+            }
+            return resultJson;
+        }
+
+        @Override
+        protected void onPostExecute(String data) {
+            super.onPostExecute(data);
+            Log.d("BaldaNDK", data);
+
+            try {
+                JSONObject jsonObject = new JSONObject(data);
+                if (jsonObject.has("code")) {
+                    if (jsonObject.getInt("code") == 1) {
+                        notification("Вы успешно зарегистрированы");
+                    } else if (jsonObject.getInt("code") == 0) {
+                        notification("Юзер существует");
+                    }
+                } else {
+                    notification("Ошибка сервера");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void notification(String text) {
+        Context context = getApplicationContext();
+        //CharSequence text = "Hello toast!";
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 }

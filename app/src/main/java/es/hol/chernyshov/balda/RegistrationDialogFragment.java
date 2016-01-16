@@ -11,22 +11,22 @@ import android.view.View;
 import android.widget.EditText;
 
 // http://developer.android.com/intl/ru/guide/topics/ui/dialogs.html
-public class LoginDialogFragment extends DialogFragment {
+public class RegistrationDialogFragment extends DialogFragment {
 
-    public interface LoginDialogListener {
-        void onLoginDialogPositiveClick(DialogFragment dialog, String username, String password);
+    public interface RegistrationDialogListener {
+        void onRegistrationDialogPositiveClick(DialogFragment dialog, String username, String password, String repeatPassword);
     }
 
-    LoginDialogListener mListener;
+    RegistrationDialogListener mListener;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (LoginDialogListener) activity;
+            mListener = (RegistrationDialogListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement LoginDialogListener");
+                    + " must implement RegistrationDialogListener");
         }
     }
 
@@ -34,16 +34,18 @@ public class LoginDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final LayoutInflater inflater = getActivity().getLayoutInflater();
-        final View layoutView = inflater.inflate(R.layout.dialog_login, null);
+        final View layoutView = inflater.inflate(R.layout.dialog_registration, null);
         builder.setView(layoutView)
-                .setPositiveButton(R.string.label_login, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.label_registration, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         EditText editUsername = (EditText) layoutView.findViewById(R.id.editUsername);
                         EditText editPassword = (EditText) layoutView.findViewById(R.id.editPassword);
+                        EditText editRepeatPassword = (EditText) layoutView.findViewById(R.id.editRepeatPassword);
                         String username = editUsername.getText().toString();
                         String password = editPassword.getText().toString();
-                        mListener.onLoginDialogPositiveClick(LoginDialogFragment.this, username, password);
+                        String repeatPassword = editRepeatPassword.getText().toString();
+                        mListener.onRegistrationDialogPositiveClick(RegistrationDialogFragment.this, username, password, repeatPassword);
                     }
                 })
                 .setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {

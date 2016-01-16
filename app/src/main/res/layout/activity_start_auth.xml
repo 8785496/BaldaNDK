@@ -110,22 +110,22 @@
                 android:layout_weight="1"
                 android:onClick="records"
                 android:text="@string/action_records" />
-
             <Button
-                android:id="@+id/btnLogin"
+                android:id="@+id/btnMyRecords"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="login"
-                android:text="@string/action_login" />
+                android:onClick="myRecords"
+                android:text="@string/action_my_records" />
 
             <Button
-                android:id="@+id/btnRegistr"
+                android:id="@+id/btnLogout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="registration"
-                android:text="@string/action_registration" />
+                android:onClick="logout"
+                android:text="@string/action_logout" />
+
         </TableLayout>
     </ScrollView>
 </LinearLayout>

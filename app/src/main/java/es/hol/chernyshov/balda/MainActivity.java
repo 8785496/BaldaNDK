@@ -1,7 +1,9 @@
 package es.hol.chernyshov.balda;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -19,6 +21,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class MainActivity extends Activity {
+
+    private SharedPreferences myPreferences;
     private String chars;
     private byte[] space;
     private ArrayList<String> wordsAll = new ArrayList<>();
@@ -31,6 +35,7 @@ public class MainActivity extends Activity {
     boolean isRandom;
     boolean isHelp = false;
     int complexity;
+    String username;
 //    int scorePlayer;
 //    int scoreAndroid;
 
@@ -43,6 +48,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        myPreferences = getSharedPreferences("mySettings", Context.MODE_PRIVATE);
+        username = myPreferences.getString("username", "Player");
+
         Intent intent = getIntent();
         lang = intent.getIntExtra("lang", 0);
         isRandom = intent.getBooleanExtra("isRandom", false);
@@ -51,19 +59,17 @@ public class MainActivity extends Activity {
         AssetManager myAssetManager = getResources().getAssets();
         nativDicInit(myAssetManager, lang);
 
-        String startWord = "";
+        String startWord;
         if (lang == 1) {
             chars = " abcdefghijklmnopqrstuvwxyz";
-            startWord = "panda";
         } else {
             chars = " абвгдежзийклмнопрстуфхцчшщъыьэюя";
-            startWord = "балда";
         }
 
         if (isRandom) {
             Random r = new Random();
-            int coontWordLen5 = nativCountWordLen5();
-            int randIndex = r.nextInt(coontWordLen5 - 1);
+            int countWordLen5 = nativCountWordLen5();
+            int randIndex = r.nextInt(countWordLen5 - 1);
             startWord = hashToString(nativRandomWord(randIndex));
         } else {
             startWord = intent.getStringExtra("startWord");
@@ -430,7 +436,8 @@ public class MainActivity extends Activity {
         } else {
             txtPlayer.setText(strWordsPlayer);
         }
-        txtScorePlayer.setText("Player: " + String.valueOf(scorePlayer));
+        //txtScorePlayer.setText("Player: " + String.valueOf(scorePlayer));
+        txtScorePlayer.setText(String.format("%s: %d", username, scorePlayer));
 
         TextView txtAndroid = (TextView) findViewById(R.id.txtAndroid);
         TextView txtScoreAndroid = (TextView) findViewById(R.id.txtScoreAndroid);

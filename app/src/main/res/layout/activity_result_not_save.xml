@@ -42,25 +42,4 @@
             android:gravity="center" />
     </LinearLayout>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/action_save_record_anonymously"
-        android:id="@+id/btnSaveAnonymously"
-        android:onClick="registrationAnonymous" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/action_login"
-        android:id="@+id/btnLogin"
-        android:onClick="login"/>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/action_registration"
-        android:id="@+id/btnRegistration"
-        android:onClick="registration"/>
-
 </LinearLayout>

@@ -19,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -28,13 +29,14 @@ import java.net.URL;
 import java.util.regex.Pattern;
 
 public class StartActivity extends FragmentActivity
-        implements LoginDialogFragment.NoticeDialogListener,
-                    WordDialogFragment.WordDialogListener {
+        implements LoginDialogFragment.LoginDialogListener,
+                    WordDialogFragment.WordDialogListener,
+                    RegistrationDialogFragment.RegistrationDialogListener {
 
     private int[] complexity = {3, 5, 10};
     private Spinner spinnerComplexity;
     private Spinner spinnerLang;
-    private RadioButton radioButton;
+    private RadioButton radioButtonRandomWord;
     private SharedPreferences myPreferences;
     private String username;
     private String password;
@@ -44,12 +46,22 @@ public class StartActivity extends FragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start);
-
         myPreferences = getSharedPreferences("mySettings", Context.MODE_PRIVATE);
+
+        init();
+    }
+
+    private void init() {
         isAuth = myPreferences.contains("username");
         username = myPreferences.getString("username", "Player");
         password = myPreferences.getString("password", "");
+
+
+        if (isAuth) {
+            setContentView(R.layout.activity_start_auth);
+        } else {
+            setContentView(R.layout.activity_start);
+        }
 
         // Complexity
         ArrayAdapter<CharSequence> adapterComplexity = ArrayAdapter.createFromResource(this,
@@ -70,29 +82,11 @@ public class StartActivity extends FragmentActivity
         spinnerLang.setSelection(0);
 
         // isRandom
-        radioButton = (RadioButton) findViewById(R.id.radioButtonRandomWord);
-
-        init();
-    }
-
-    private void init() {
-        if (isAuth) {
-            Button btnLogin = (Button) findViewById(R.id.btnLogin);
-            btnLogin.setVisibility(View.GONE);
-
-            Button btnRegistr = (Button) findViewById(R.id.btnRegistr);
-            btnRegistr.setVisibility(View.GONE);
-        } else {
-            Button btnMyRecords = (Button) findViewById(R.id.btnMyRecords);
-            btnMyRecords.setVisibility(View.GONE);
-
-            Button btnLogout = (Button) findViewById(R.id.btnLogout);
-            btnLogout.setVisibility(View.GONE);
-        }
+        radioButtonRandomWord = (RadioButton) findViewById(R.id.radioButtonRandomWord);
     }
 
     public void startGame(View view) {
-        boolean isRandom = radioButton.isChecked();
+        boolean isRandom = radioButtonRandomWord.isChecked();
         int lang = spinnerLang.getSelectedItemPosition();
         int _complexity = complexity[spinnerComplexity.getSelectedItemPosition()];
 
@@ -119,7 +113,9 @@ public class StartActivity extends FragmentActivity
     }
 
     public void registration(View view) {
-        startActivity(new Intent(this, RegisterActivity.class));
+        //startActivity(new Intent(this, RegisterActivity.class));
+        DialogFragment dialog = new RegistrationDialogFragment();
+        dialog.show(getSupportFragmentManager(), "RegistrationDialogFragment");
     }
 
     public void login(View view) {
@@ -128,8 +124,14 @@ public class StartActivity extends FragmentActivity
     }
 
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog, String username, String password) {
+    public void onLoginDialogPositiveClick(DialogFragment dialog, String username, String password) {
         new UserAuthTask().execute(username, password);
+    }
+
+    @Override
+    public void onRegistrationDialogPositiveClick(DialogFragment dialog, String username, String password, String repeatPassword) {
+        //new UserAuthTask().execute(username, password);
+        new RegistrationTask().execute(username, password);
     }
 
     @Override
@@ -152,7 +154,7 @@ public class StartActivity extends FragmentActivity
             rbtnChooseWord.setText(startWord);
             //Log.d("BaldaNDK", "startWord = " + startWord);
         } else {
-            radioButton.setChecked(true);
+            radioButtonRandomWord.setChecked(true);
             spinnerLang.setEnabled(true);
             RadioButton rbtnChooseWord = (RadioButton) findViewById(R.id.radioButtonChooseWord);
             rbtnChooseWord.setText(getResources().getString(R.string.label_choose_word));
@@ -163,7 +165,7 @@ public class StartActivity extends FragmentActivity
 
     @Override
     public void onWordDialogNegativeClick(DialogFragment dialog) {
-        radioButton.setChecked(true);
+        radioButtonRandomWord.setChecked(true);
         spinnerLang.setEnabled(true);
         RadioButton rbtnChooseWord = (RadioButton) findViewById(R.id.radioButtonChooseWord);
         rbtnChooseWord.setText(getResources().getString(R.string.label_choose_word));
@@ -174,6 +176,8 @@ public class StartActivity extends FragmentActivity
         editor.remove("username");
         editor.remove("password");
         editor.apply();
+
+        init();
     }
 
     public void setWord(View view) {
@@ -226,6 +230,10 @@ public class StartActivity extends FragmentActivity
         @Override
         protected void onPostExecute(String strJson) {
             super.onPostExecute(strJson);
+            if (strJson == "") {
+                notification("Cервер не доступен");
+                return;
+            }
             Log.d("BaldaNDK", strJson);
             try {
                 JSONObject data = new JSONObject(strJson);
@@ -239,11 +247,79 @@ public class StartActivity extends FragmentActivity
                     editor.putString("password", user.getString("password"));
                     editor.apply();
                     text = "Вход выполнен";
+                    init();
                 } else {
                     text = "Не верный логин или пароль";
                 }
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class RegistrationTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            HttpURLConnection urlConnection = null;
+            //JSONArray jsonRecords = null;
+            String resultJson = "";
+            try {
+                URL url = new URL("http://chernyshov.hol.es/user");
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setReadTimeout(10000);
+                urlConnection.setConnectTimeout(15000);
+                urlConnection.setRequestMethod("POST");
+                OutputStream outputStream = urlConnection.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                JSONObject data = new JSONObject();
+                JSONObject user = new JSONObject();
+                data.put("username", params[0]);
+                data.put("password", params[1]);
+                Log.d("BaldaNDK", data.toString());
+                writer.write(data.toString());
+                writer.flush();
+                writer.close();
+                outputStream.close();
+                urlConnection.connect();
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line);
+                }
+                resultJson = buffer.toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } finally {
+                urlConnection.disconnect();
+            }
+            return resultJson;
+        }
+
+        @Override
+        protected void onPostExecute(String data) {
+            super.onPostExecute(data);
+            if (data == "") {
+                notification("Cервер не доступен");
+                return;
+            }
+            Log.d("BaldaNDK", data);
+            try {
+                JSONObject jsonObject = new JSONObject(data);
+                if (jsonObject.has("code")) {
+                    if (jsonObject.getInt("code") == 1) {
+                        notification("Вы успешно зарегистрированы");
+                    } else if (jsonObject.getInt("code") == 0) {
+                        notification("Юзер существует");
+                    }
+                } else {
+                    notification("Ошибка сервера");
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
