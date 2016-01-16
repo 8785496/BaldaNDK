@@ -1,15 +1,20 @@
 package es.hol.chernyshov.balda;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,6 +41,8 @@ public class MainActivity extends Activity {
     boolean isHelp = false;
     int complexity;
     String username;
+    Button[] buttons = new Button[25];
+    ColorStateList textColor;
 //    int scorePlayer;
 //    int scoreAndroid;
 
@@ -88,7 +95,16 @@ public class MainActivity extends Activity {
             space[i + 10] = (byte) chars.indexOf(startWord.charAt(i));
         }
 
+        init();
         refresh();
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
     }
 
     @Override
@@ -138,6 +154,7 @@ public class MainActivity extends Activity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         setContentView(R.layout.activity_main);
+        init();
         refresh();
     }
 
@@ -154,6 +171,59 @@ public class MainActivity extends Activity {
         } else {
             Log.d("BaldaNDK", "RESULT_CANCELED");
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder quitDialog = new AlertDialog.Builder(this);
+
+        quitDialog.setTitle("Выход")
+                .setMessage("Вы уверены, что хотите закончить игру?")
+                .setPositiveButton(R.string.label_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}
+                });
+        quitDialog.show();
+    }
+
+    private void init() {
+        buttons[0] = (Button) findViewById(R.id.button_0);
+        buttons[1] = (Button) findViewById(R.id.button_1);
+        buttons[2] = (Button) findViewById(R.id.button_2);
+        buttons[3] = (Button) findViewById(R.id.button_3);
+        buttons[4] = (Button) findViewById(R.id.button_4);
+
+        buttons[5] = (Button) findViewById(R.id.button_5);
+        buttons[6] = (Button) findViewById(R.id.button_6);
+        buttons[7] = (Button) findViewById(R.id.button_7);
+        buttons[8] = (Button) findViewById(R.id.button_8);
+        buttons[9] = (Button) findViewById(R.id.button_9);
+
+        buttons[10] = (Button) findViewById(R.id.button_10);
+        buttons[11] = (Button) findViewById(R.id.button_11);
+        buttons[12] = (Button) findViewById(R.id.button_12);
+        buttons[13] = (Button) findViewById(R.id.button_13);
+        buttons[14] = (Button) findViewById(R.id.button_14);
+
+        buttons[15] = (Button) findViewById(R.id.button_15);
+        buttons[16] = (Button) findViewById(R.id.button_16);
+        buttons[17] = (Button) findViewById(R.id.button_17);
+        buttons[18] = (Button) findViewById(R.id.button_18);
+        buttons[19] = (Button) findViewById(R.id.button_19);
+
+        buttons[20] = (Button) findViewById(R.id.button_20);
+        buttons[21] = (Button) findViewById(R.id.button_21);
+        buttons[22] = (Button) findViewById(R.id.button_22);
+        buttons[23] = (Button) findViewById(R.id.button_23);
+        buttons[24] = (Button) findViewById(R.id.button_24);
+
+        textColor = buttons[0].getTextColors();
     }
 
     private native void nativDestruct();
@@ -245,83 +315,90 @@ public class MainActivity extends Activity {
     }
 
     public void showDialog(View view) {
-        switch (view.getId()){
-            case R.id.button_0:
-                action(0);
+        for (int i = 0; i < buttons.length; i++) {
+            if (buttons[i].getId() == view.getId()) {
+                action(i);
                 break;
-            case R.id.button_1:
-                action(1);
-                break;
-            case R.id.button_2:
-                action(2);
-                break;
-            case R.id.button_3:
-                action(3);
-                break;
-            case R.id.button_4:
-                action(4);
-                break;
-            case R.id.button_5:
-                action(5);
-                break;
-            case R.id.button_6:
-                action(6);
-                break;
-            case R.id.button_7:
-                action(7);
-                break;
-            case R.id.button_8:
-                action(8);
-                break;
-            case R.id.button_9:
-                action(9);
-                break;
-            case R.id.button_10:
-                action(10);
-                break;
-            case R.id.button_11:
-                action(11);
-                break;
-            case R.id.button_12:
-                action(12);
-                break;
-            case R.id.button_13:
-                action(13);
-                break;
-            case R.id.button_14:
-                action(14);
-                break;
-            case R.id.button_15:
-                action(15);
-                break;
-            case R.id.button_16:
-                action(16);
-                break;
-            case R.id.button_17:
-                action(17);
-                break;
-            case R.id.button_18:
-                action(18);
-                break;
-            case R.id.button_19:
-                action(19);
-                break;
-            case R.id.button_20:
-                action(20);
-                break;
-            case R.id.button_21:
-                action(21);
-                break;
-            case R.id.button_22:
-                action(22);
-                break;
-            case R.id.button_23:
-                action(23);
-                break;
-            case R.id.button_24:
-                action(24);
-                break;
+            }
         }
+
+//        switch (view.getId()){
+//            case R.id.button_0:
+//                action(0);
+//                break;
+//            case R.id.button_1:
+//                action(1);
+//                break;
+//            case R.id.button_2:
+//                action(2);
+//                break;
+//            case R.id.button_3:
+//                action(3);
+//                break;
+//            case R.id.button_4:
+//                action(4);
+//                break;
+//            case R.id.button_5:
+//                action(5);
+//                break;
+//            case R.id.button_6:
+//                action(6);
+//                break;
+//            case R.id.button_7:
+//                action(7);
+//                break;
+//            case R.id.button_8:
+//                action(8);
+//                break;
+//            case R.id.button_9:
+//                action(9);
+//                break;
+//            case R.id.button_10:
+//                action(10);
+//                break;
+//            case R.id.button_11:
+//                action(11);
+//                break;
+//            case R.id.button_12:
+//                action(12);
+//                break;
+//            case R.id.button_13:
+//                action(13);
+//                break;
+//            case R.id.button_14:
+//                action(14);
+//                break;
+//            case R.id.button_15:
+//                action(15);
+//                break;
+//            case R.id.button_16:
+//                action(16);
+//                break;
+//            case R.id.button_17:
+//                action(17);
+//                break;
+//            case R.id.button_18:
+//                action(18);
+//                break;
+//            case R.id.button_19:
+//                action(19);
+//                break;
+//            case R.id.button_20:
+//                action(20);
+//                break;
+//            case R.id.button_21:
+//                action(21);
+//                break;
+//            case R.id.button_22:
+//                action(22);
+//                break;
+//            case R.id.button_23:
+//                action(23);
+//                break;
+//            case R.id.button_24:
+//                action(24);
+//                break;
+//        }
     }
 
     private void action(int requestCode) {
@@ -338,12 +415,8 @@ public class MainActivity extends Activity {
                 } else {
                     coordinates.add(requestCode);
                 }
-                int n = coordinates.size();
-                char[] buffer = new char[n];
-                for(int i = 0; i < n; i++)
-                    buffer[i] = chars.charAt(space[coordinates.get(i)]);
-                TextView txtWord = (TextView) findViewById(R.id.txtWord);
-                txtWord.setText(buffer, 0, buffer.length);
+
+                refresh();
             }
         } else {
             if (space[requestCode] == 0) {
@@ -361,62 +434,81 @@ public class MainActivity extends Activity {
     }
 
     private void refresh () {
-        Button btn;
+//        Button btn;
+//
+//        btn = (Button) findViewById(R.id.button_0);
+//        btn.setText(String.valueOf(chars.charAt(space[0])));
+//        btn = (Button) findViewById(R.id.button_1);
+//        btn.setText(String.valueOf(chars.charAt(space[1])));
+//        btn = (Button) findViewById(R.id.button_2);
+//        btn.setText(String.valueOf(chars.charAt(space[2])));
+//        btn = (Button) findViewById(R.id.button_3);
+//        btn.setText(String.valueOf(chars.charAt(space[3])));
+//        btn = (Button) findViewById(R.id.button_4);
+//        btn.setText(String.valueOf(chars.charAt(space[4])));
+//
+//        btn = (Button) findViewById(R.id.button_5);
+//        btn.setText(String.valueOf(chars.charAt(space[5])));
+//        btn = (Button) findViewById(R.id.button_6);
+//        btn.setText(String.valueOf(chars.charAt(space[6])));
+//        btn = (Button) findViewById(R.id.button_7);
+//        btn.setText(String.valueOf(chars.charAt(space[7])));
+//        btn = (Button) findViewById(R.id.button_8);
+//        btn.setText(String.valueOf(chars.charAt(space[8])));
+//        btn = (Button) findViewById(R.id.button_9);
+//        btn.setText(String.valueOf(chars.charAt(space[9])));
+//
+//        btn = (Button) findViewById(R.id.button_10);
+//        btn.setText(String.valueOf(chars.charAt(space[10])));
+//        btn = (Button) findViewById(R.id.button_11);
+//        btn.setText(String.valueOf(chars.charAt(space[11])));
+//        btn = (Button) findViewById(R.id.button_12);
+//        btn.setText(String.valueOf(chars.charAt(space[12])));
+//        btn = (Button) findViewById(R.id.button_13);
+//        btn.setText(String.valueOf(chars.charAt(space[13])));
+//        btn = (Button) findViewById(R.id.button_14);
+//        btn.setText(String.valueOf(chars.charAt(space[14])));
+//
+//        btn = (Button) findViewById(R.id.button_15);
+//        btn.setText(String.valueOf(chars.charAt(space[15])));
+//        btn = (Button) findViewById(R.id.button_16);
+//        btn.setText(String.valueOf(chars.charAt(space[16])));
+//        btn = (Button) findViewById(R.id.button_17);
+//        btn.setText(String.valueOf(chars.charAt(space[17])));
+//        btn = (Button) findViewById(R.id.button_18);
+//        btn.setText(String.valueOf(chars.charAt(space[18])));
+//        btn = (Button) findViewById(R.id.button_19);
+//        btn.setText(String.valueOf(chars.charAt(space[19])));
+//
+//        btn = (Button) findViewById(R.id.button_20);
+//        btn.setText(String.valueOf(chars.charAt(space[20])));
+//        btn = (Button) findViewById(R.id.button_21);
+//        btn.setText(String.valueOf(chars.charAt(space[21])));
+//        btn = (Button) findViewById(R.id.button_22);
+//        btn.setText(String.valueOf(chars.charAt(space[22])));
+//        btn = (Button) findViewById(R.id.button_23);
+//        btn.setText(String.valueOf(chars.charAt(space[23])));
+//        btn = (Button) findViewById(R.id.button_24);
+//        btn.setText(String.valueOf(chars.charAt(space[24])));
 
-        btn = (Button) findViewById(R.id.button_0);
-        btn.setText(String.valueOf(chars.charAt(space[0])));
-        btn = (Button) findViewById(R.id.button_1);
-        btn.setText(String.valueOf(chars.charAt(space[1])));
-        btn = (Button) findViewById(R.id.button_2);
-        btn.setText(String.valueOf(chars.charAt(space[2])));
-        btn = (Button) findViewById(R.id.button_3);
-        btn.setText(String.valueOf(chars.charAt(space[3])));
-        btn = (Button) findViewById(R.id.button_4);
-        btn.setText(String.valueOf(chars.charAt(space[4])));
+        for(int i = 0; i < buttons.length; i++) {
+            buttons[i].setText(String.valueOf(chars.charAt(space[i])));
+            if (coordinates.size() > 0 && coordinates.get(0) == i) {
+                buttons[i].setTextColor(Color.RED);
+            } else if (coordinates.contains(i)) {
+                buttons[i].setTextColor(Color.YELLOW);
+            } else {
+                //buttons[i].setBackgroundResource(android.R.drawable.btn_default);
+                buttons[i].setTextColor(textColor);
+            }
+        }
 
-        btn = (Button) findViewById(R.id.button_5);
-        btn.setText(String.valueOf(chars.charAt(space[5])));
-        btn = (Button) findViewById(R.id.button_6);
-        btn.setText(String.valueOf(chars.charAt(space[6])));
-        btn = (Button) findViewById(R.id.button_7);
-        btn.setText(String.valueOf(chars.charAt(space[7])));
-        btn = (Button) findViewById(R.id.button_8);
-        btn.setText(String.valueOf(chars.charAt(space[8])));
-        btn = (Button) findViewById(R.id.button_9);
-        btn.setText(String.valueOf(chars.charAt(space[9])));
-
-        btn = (Button) findViewById(R.id.button_10);
-        btn.setText(String.valueOf(chars.charAt(space[10])));
-        btn = (Button) findViewById(R.id.button_11);
-        btn.setText(String.valueOf(chars.charAt(space[11])));
-        btn = (Button) findViewById(R.id.button_12);
-        btn.setText(String.valueOf(chars.charAt(space[12])));
-        btn = (Button) findViewById(R.id.button_13);
-        btn.setText(String.valueOf(chars.charAt(space[13])));
-        btn = (Button) findViewById(R.id.button_14);
-        btn.setText(String.valueOf(chars.charAt(space[14])));
-
-        btn = (Button) findViewById(R.id.button_15);
-        btn.setText(String.valueOf(chars.charAt(space[15])));
-        btn = (Button) findViewById(R.id.button_16);
-        btn.setText(String.valueOf(chars.charAt(space[16])));
-        btn = (Button) findViewById(R.id.button_17);
-        btn.setText(String.valueOf(chars.charAt(space[17])));
-        btn = (Button) findViewById(R.id.button_18);
-        btn.setText(String.valueOf(chars.charAt(space[18])));
-        btn = (Button) findViewById(R.id.button_19);
-        btn.setText(String.valueOf(chars.charAt(space[19])));
-
-        btn = (Button) findViewById(R.id.button_20);
-        btn.setText(String.valueOf(chars.charAt(space[20])));
-        btn = (Button) findViewById(R.id.button_21);
-        btn.setText(String.valueOf(chars.charAt(space[21])));
-        btn = (Button) findViewById(R.id.button_22);
-        btn.setText(String.valueOf(chars.charAt(space[22])));
-        btn = (Button) findViewById(R.id.button_23);
-        btn.setText(String.valueOf(chars.charAt(space[23])));
-        btn = (Button) findViewById(R.id.button_24);
-        btn.setText(String.valueOf(chars.charAt(space[24])));
+        int n = coordinates.size();
+        char[] buffer = new char[n];
+        for(int i = 0; i < n; i++)
+            buffer[i] = chars.charAt(space[coordinates.get(i)]);
+        TextView txtWord = (TextView) findViewById(R.id.txtWord);
+        txtWord.setText(buffer, 0, buffer.length);
 
         TextView txtPlayer = (TextView) findViewById(R.id.txtPlayer);
         TextView txtScorePlayer = (TextView) findViewById(R.id.txtScorePlayer);
@@ -436,7 +528,6 @@ public class MainActivity extends Activity {
         } else {
             txtPlayer.setText(strWordsPlayer);
         }
-        //txtScorePlayer.setText("Player: " + String.valueOf(scorePlayer));
         txtScorePlayer.setText(String.format("%s: %d", username, scorePlayer));
 
         TextView txtAndroid = (TextView) findViewById(R.id.txtAndroid);
@@ -565,4 +656,7 @@ public class MainActivity extends Activity {
         return scoreAndroid;
     }
 
+    public void openMenu(View view) {
+        openOptionsMenu();
+    }
 }
