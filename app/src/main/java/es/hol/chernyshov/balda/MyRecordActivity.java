@@ -37,7 +37,6 @@ public class MyRecordActivity extends Activity {
         Log.d("BaldaNDK", "username = " + username);
 
         if (username == "") {
-            startActivity(new Intent(this, RegisterActivity.class));
             finish();
         } else {
             setContentView(R.layout.activity_my_record);

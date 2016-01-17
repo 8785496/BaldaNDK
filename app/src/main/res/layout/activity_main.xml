@@ -36,7 +36,7 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/imageButton2"
+                android:id="@+id/imgBtnCancel"
                 android:layout_weight="0.1"
                 android:width="0dp"
                 android:onClick="cancel"
@@ -45,7 +45,7 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/imageButton"
+                android:id="@+id/imgBtnMenu"
                 android:layout_weight="0.1"
                 android:src="@android:drawable/ic_menu_more"
                 android:width="0dp"

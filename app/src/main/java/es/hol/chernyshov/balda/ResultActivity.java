@@ -32,6 +32,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.regex.Pattern;
 
 public class ResultActivity extends FragmentActivity
         implements LoginDialogFragment.LoginDialogListener,
@@ -50,8 +51,6 @@ public class ResultActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
 
         myPreferences = getSharedPreferences("mySettings", Context.MODE_PRIVATE);
-        username = myPreferences.getString("username", "Player");
-        password = myPreferences.getString("password", "");
 
         intent = getIntent();
         scorePlayer = intent.getIntExtra("scorePlayer", 0);
@@ -59,13 +58,12 @@ public class ResultActivity extends FragmentActivity
         isHelp = intent.getBooleanExtra("isHelp", false);
 
         init();
-
-//        TextView textView3 = (TextView) findViewById(R.id.textView3);
-//        textView3.setText(myPreferences.getString("username", "Player"));
     }
 
     private void init() {
         boolean isAuth = myPreferences.contains("username");
+        username = myPreferences.getString("username", "Player");
+        password = myPreferences.getString("password", "");
 
         if (isHelp || (scorePlayer <= scoreAndroid)) {
             setContentView(R.layout.activity_result_not_save);
@@ -101,7 +99,6 @@ public class ResultActivity extends FragmentActivity
     }
 
     public void registration(View view) {
-        //startActivity(new Intent(this, RegisterActivity.class));
         DialogFragment dialog = new RegistrationDialogFragment();
         dialog.show(getSupportFragmentManager(), "RegistrationDialogFragment");
     }
@@ -113,7 +110,17 @@ public class ResultActivity extends FragmentActivity
 
     @Override
     public void onRegistrationDialogPositiveClick(DialogFragment dialog, String username, String password, String repeatPassword) {
+        Pattern p = Pattern.compile("^[A-Za-z0-9]{3,10}$");
 
+        if (!p.matcher(username).matches()) {
+            notification(R.string.message_invalid_name);
+        } else if (password.length() < 3) {
+            notification(R.string.message_invalid_password);
+        } else if (!password.equals(repeatPassword)) {
+            notification(R.string.message_passwords_equivalent);
+        } else {
+            new RegistrationTask().execute(username, password);
+        }
     }
 
     private class SaveRecordTask extends AsyncTask<String, Void, String> {
@@ -163,10 +170,9 @@ public class ResultActivity extends FragmentActivity
                 JSONObject data = new JSONObject(strJson);
                 if (data.has("code") && data.getInt("code") == 1) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ResultActivity.this);
-                    builder.setTitle("Сообщение")
-                            .setMessage("Ваш рекорд успешно сохранен")
+                    builder.setMessage(R.string.message_record_saved)
                             .setCancelable(false)
-                            .setNegativeButton("Ok",
+                            .setNegativeButton(R.string.label_ok,
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             dialog.cancel();
@@ -419,18 +425,21 @@ public class ResultActivity extends FragmentActivity
         @Override
         protected void onPostExecute(String data) {
             super.onPostExecute(data);
+            if (data == "") {
+                notification(R.string.error_server);
+                return;
+            }
             Log.d("BaldaNDK", data);
-
             try {
                 JSONObject jsonObject = new JSONObject(data);
                 if (jsonObject.has("code")) {
                     if (jsonObject.getInt("code") == 1) {
-                        notification("Вы успешно зарегистрированы");
+                        notification(R.string.message_you_are_registered);
                     } else if (jsonObject.getInt("code") == 0) {
-                        notification("Юзер существует");
+                        notification(R.string.message_user_exist);
                     }
                 } else {
-                    notification("Ошибка сервера");
+                    notification(R.string.error_server);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -438,9 +447,16 @@ public class ResultActivity extends FragmentActivity
         }
     }
 
+    private void notification(int stringId) {
+        String text = getResources().getString(stringId);
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+
     private void notification(String text) {
         Context context = getApplicationContext();
-        //CharSequence text = "Hello toast!";
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();

@@ -21,6 +21,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -43,8 +45,6 @@ public class MainActivity extends Activity {
     String username;
     Button[] buttons = new Button[25];
     ColorStateList textColor;
-//    int scorePlayer;
-//    int scoreAndroid;
 
     static {
         System.loadLibrary("balda");
@@ -177,8 +177,8 @@ public class MainActivity extends Activity {
     public void onBackPressed() {
         AlertDialog.Builder quitDialog = new AlertDialog.Builder(this);
 
-        quitDialog.setTitle("Выход")
-                .setMessage("Вы уверены, что хотите закончить игру?")
+        quitDialog.setTitle(R.string.title_dialog_quit)
+                .setMessage(R.string.label_quit)
                 .setPositiveButton(R.string.label_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -321,84 +321,6 @@ public class MainActivity extends Activity {
                 break;
             }
         }
-
-//        switch (view.getId()){
-//            case R.id.button_0:
-//                action(0);
-//                break;
-//            case R.id.button_1:
-//                action(1);
-//                break;
-//            case R.id.button_2:
-//                action(2);
-//                break;
-//            case R.id.button_3:
-//                action(3);
-//                break;
-//            case R.id.button_4:
-//                action(4);
-//                break;
-//            case R.id.button_5:
-//                action(5);
-//                break;
-//            case R.id.button_6:
-//                action(6);
-//                break;
-//            case R.id.button_7:
-//                action(7);
-//                break;
-//            case R.id.button_8:
-//                action(8);
-//                break;
-//            case R.id.button_9:
-//                action(9);
-//                break;
-//            case R.id.button_10:
-//                action(10);
-//                break;
-//            case R.id.button_11:
-//                action(11);
-//                break;
-//            case R.id.button_12:
-//                action(12);
-//                break;
-//            case R.id.button_13:
-//                action(13);
-//                break;
-//            case R.id.button_14:
-//                action(14);
-//                break;
-//            case R.id.button_15:
-//                action(15);
-//                break;
-//            case R.id.button_16:
-//                action(16);
-//                break;
-//            case R.id.button_17:
-//                action(17);
-//                break;
-//            case R.id.button_18:
-//                action(18);
-//                break;
-//            case R.id.button_19:
-//                action(19);
-//                break;
-//            case R.id.button_20:
-//                action(20);
-//                break;
-//            case R.id.button_21:
-//                action(21);
-//                break;
-//            case R.id.button_22:
-//                action(22);
-//                break;
-//            case R.id.button_23:
-//                action(23);
-//                break;
-//            case R.id.button_24:
-//                action(24);
-//                break;
-//        }
     }
 
     private void action(int requestCode) {
@@ -434,63 +356,6 @@ public class MainActivity extends Activity {
     }
 
     private void refresh () {
-//        Button btn;
-//
-//        btn = (Button) findViewById(R.id.button_0);
-//        btn.setText(String.valueOf(chars.charAt(space[0])));
-//        btn = (Button) findViewById(R.id.button_1);
-//        btn.setText(String.valueOf(chars.charAt(space[1])));
-//        btn = (Button) findViewById(R.id.button_2);
-//        btn.setText(String.valueOf(chars.charAt(space[2])));
-//        btn = (Button) findViewById(R.id.button_3);
-//        btn.setText(String.valueOf(chars.charAt(space[3])));
-//        btn = (Button) findViewById(R.id.button_4);
-//        btn.setText(String.valueOf(chars.charAt(space[4])));
-//
-//        btn = (Button) findViewById(R.id.button_5);
-//        btn.setText(String.valueOf(chars.charAt(space[5])));
-//        btn = (Button) findViewById(R.id.button_6);
-//        btn.setText(String.valueOf(chars.charAt(space[6])));
-//        btn = (Button) findViewById(R.id.button_7);
-//        btn.setText(String.valueOf(chars.charAt(space[7])));
-//        btn = (Button) findViewById(R.id.button_8);
-//        btn.setText(String.valueOf(chars.charAt(space[8])));
-//        btn = (Button) findViewById(R.id.button_9);
-//        btn.setText(String.valueOf(chars.charAt(space[9])));
-//
-//        btn = (Button) findViewById(R.id.button_10);
-//        btn.setText(String.valueOf(chars.charAt(space[10])));
-//        btn = (Button) findViewById(R.id.button_11);
-//        btn.setText(String.valueOf(chars.charAt(space[11])));
-//        btn = (Button) findViewById(R.id.button_12);
-//        btn.setText(String.valueOf(chars.charAt(space[12])));
-//        btn = (Button) findViewById(R.id.button_13);
-//        btn.setText(String.valueOf(chars.charAt(space[13])));
-//        btn = (Button) findViewById(R.id.button_14);
-//        btn.setText(String.valueOf(chars.charAt(space[14])));
-//
-//        btn = (Button) findViewById(R.id.button_15);
-//        btn.setText(String.valueOf(chars.charAt(space[15])));
-//        btn = (Button) findViewById(R.id.button_16);
-//        btn.setText(String.valueOf(chars.charAt(space[16])));
-//        btn = (Button) findViewById(R.id.button_17);
-//        btn.setText(String.valueOf(chars.charAt(space[17])));
-//        btn = (Button) findViewById(R.id.button_18);
-//        btn.setText(String.valueOf(chars.charAt(space[18])));
-//        btn = (Button) findViewById(R.id.button_19);
-//        btn.setText(String.valueOf(chars.charAt(space[19])));
-//
-//        btn = (Button) findViewById(R.id.button_20);
-//        btn.setText(String.valueOf(chars.charAt(space[20])));
-//        btn = (Button) findViewById(R.id.button_21);
-//        btn.setText(String.valueOf(chars.charAt(space[21])));
-//        btn = (Button) findViewById(R.id.button_22);
-//        btn.setText(String.valueOf(chars.charAt(space[22])));
-//        btn = (Button) findViewById(R.id.button_23);
-//        btn.setText(String.valueOf(chars.charAt(space[23])));
-//        btn = (Button) findViewById(R.id.button_24);
-//        btn.setText(String.valueOf(chars.charAt(space[24])));
-
         for(int i = 0; i < buttons.length; i++) {
             buttons[i].setText(String.valueOf(chars.charAt(space[i])));
             if (coordinates.size() > 0 && coordinates.get(0) == i) {
@@ -498,7 +363,6 @@ public class MainActivity extends Activity {
             } else if (coordinates.contains(i)) {
                 buttons[i].setTextColor(Color.YELLOW);
             } else {
-                //buttons[i].setBackgroundResource(android.R.drawable.btn_default);
                 buttons[i].setTextColor(textColor);
             }
         }
@@ -548,7 +412,7 @@ public class MainActivity extends Activity {
         } else {
             txtAndroid.setText(strWordsAndroid);
         }
-        txtScoreAndroid.setText("Android: " + String.valueOf(scoreAndroid));
+        txtScoreAndroid.setText(String.format("Android: %s", scoreAndroid));
     }
 
     public void step(View view) {
@@ -562,9 +426,9 @@ public class MainActivity extends Activity {
             }
             String word = String.valueOf(wordChars);
             if (!coordinates.contains(insertCharIndex)) {
-                notification("Слово не содержит добавленную букву");
+                notification(R.string.message_word_not_contain);
             } else if (wordsAll.contains(word)) {
-                notification("Слово уже использовано");
+                notification(R.string.message_word_used);
             } else if (nativFindWord(bytes)) {
                 boolTrack = false;
                 insertCharIndex = -1;
@@ -574,7 +438,6 @@ public class MainActivity extends Activity {
                 trackIter();
                 getWord();
                 if (endGame()) {
-                    notification("End game!");
                     Intent intent = new Intent(MainActivity.this, ResultActivity.class);
                     intent.putExtra("scorePlayer", getScorePlayer());
                     intent.putExtra("scoreAndroid", getScoreAndroid());
@@ -583,10 +446,10 @@ public class MainActivity extends Activity {
                     finish();
                 }
             } else {
-                notification("Слово не найдено");
+                notification(R.string.message_word_not_found);
             }
         } else {
-            notification("Выберете слово");
+            notification(R.string.message_select_letter);
         }
         refresh();
     }
@@ -616,7 +479,6 @@ public class MainActivity extends Activity {
         getWord();
         refresh();
         if (endGame()) {
-            notification("End game!");
             Intent intent = new Intent(MainActivity.this, ResultActivity.class);
             intent.putExtra("scorePlayer", getScorePlayer());
             intent.putExtra("scoreAndroid", getScoreAndroid());
@@ -626,10 +488,12 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void notification(String text) {
-        Log.d("BaldaNDK", text);
-        TextView textView = (TextView) findViewById(R.id.textView);
-        textView.setText(text);
+    private void notification(int stringId) {
+        String text = getResources().getString(stringId);
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 
     private boolean endGame(){

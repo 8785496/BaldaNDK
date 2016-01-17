@@ -95,11 +95,7 @@ public class StartActivity extends FragmentActivity
         intent.putExtra("complexity", _complexity);
         intent.putExtra("isRandom", isRandom);
         if (!isRandom) {
-            if (lang == 1) {
-                intent.putExtra("startWord", startWord);
-            } else {
-                intent.putExtra("startWord", startWord);
-            }
+            intent.putExtra("startWord", startWord);
         }
         startActivity(intent);
     }
@@ -113,7 +109,6 @@ public class StartActivity extends FragmentActivity
     }
 
     public void registration(View view) {
-        //startActivity(new Intent(this, RegisterActivity.class));
         DialogFragment dialog = new RegistrationDialogFragment();
         dialog.show(getSupportFragmentManager(), "RegistrationDialogFragment");
     }
@@ -130,7 +125,6 @@ public class StartActivity extends FragmentActivity
 
     @Override
     public void onRegistrationDialogPositiveClick(DialogFragment dialog, String username, String password, String repeatPassword) {
-        //new UserAuthTask().execute(username, password);
         new RegistrationTask().execute(username, password);
     }
 
@@ -152,14 +146,12 @@ public class StartActivity extends FragmentActivity
             startWord = word;
             RadioButton rbtnChooseWord = (RadioButton) findViewById(R.id.radioButtonChooseWord);
             rbtnChooseWord.setText(startWord);
-            //Log.d("BaldaNDK", "startWord = " + startWord);
         } else {
             radioButtonRandomWord.setChecked(true);
             spinnerLang.setEnabled(true);
             RadioButton rbtnChooseWord = (RadioButton) findViewById(R.id.radioButtonChooseWord);
             rbtnChooseWord.setText(getResources().getString(R.string.label_choose_word));
-            //Log.d("BaldaNDK", "Incorrect word");
-            notification("Incorrect word");
+            notification(R.string.message_incorrect_word);
         }
     }
 
@@ -178,6 +170,7 @@ public class StartActivity extends FragmentActivity
         editor.apply();
 
         init();
+        notification(R.string.message_you_logged_out);
     }
 
     public void setWord(View view) {
@@ -231,28 +224,23 @@ public class StartActivity extends FragmentActivity
         protected void onPostExecute(String strJson) {
             super.onPostExecute(strJson);
             if (strJson == "") {
-                notification("Cервер не доступен");
+                notification(R.string.error_server);
                 return;
             }
             Log.d("BaldaNDK", strJson);
             try {
                 JSONObject data = new JSONObject(strJson);
-                Context context = getApplicationContext();
-                int duration = Toast.LENGTH_SHORT;
-                CharSequence text;
                 if (data.has("code") && data.getInt("code") == 1) {
                     JSONObject user = data.getJSONObject("user");
                     SharedPreferences.Editor editor = myPreferences.edit();
                     editor.putString("username", user.getString("username"));
                     editor.putString("password", user.getString("password"));
                     editor.apply();
-                    text = "Вход выполнен";
+                    notification(R.string.message_you_are_logged);
                     init();
                 } else {
-                    text = "Не верный логин или пароль";
+                    notification(R.string.message_invalid_login);
                 }
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -274,7 +262,6 @@ public class StartActivity extends FragmentActivity
                 OutputStream outputStream = urlConnection.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 JSONObject data = new JSONObject();
-                JSONObject user = new JSONObject();
                 data.put("username", params[0]);
                 data.put("password", params[1]);
                 Log.d("BaldaNDK", data.toString());
@@ -305,7 +292,7 @@ public class StartActivity extends FragmentActivity
         protected void onPostExecute(String data) {
             super.onPostExecute(data);
             if (data == "") {
-                notification("Cервер не доступен");
+                notification(R.string.error_server);
                 return;
             }
             Log.d("BaldaNDK", data);
@@ -313,12 +300,12 @@ public class StartActivity extends FragmentActivity
                 JSONObject jsonObject = new JSONObject(data);
                 if (jsonObject.has("code")) {
                     if (jsonObject.getInt("code") == 1) {
-                        notification("Вы успешно зарегистрированы");
+                        notification(R.string.message_you_are_registered);
                     } else if (jsonObject.getInt("code") == 0) {
-                        notification("Юзер существует");
+                        notification(R.string.message_user_exist);
                     }
                 } else {
-                    notification("Ошибка сервера");
+                    notification(R.string.error_server);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -326,9 +313,9 @@ public class StartActivity extends FragmentActivity
         }
     }
 
-    private void notification(String text) {
+    private void notification(int stringId) {
+        String text = getResources().getString(stringId);
         Context context = getApplicationContext();
-        //CharSequence text = "Hello toast!";
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();

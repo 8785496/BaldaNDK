@@ -37,11 +37,6 @@
             android:label="@string/title_activity_result" >
         </activity>
         <activity
-            android:name=".RegisterActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_registration" >
-        </activity>
-        <activity
             android:name=".LoginActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_login" >

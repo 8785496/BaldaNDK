@@ -15,10 +15,24 @@
     <string name="action_save_record">Save record</string>
     <string name="action_save_record_anonymously">Save record anonymously</string>
 
-    <string name="label_yandex"><a href="http://api.yandex.ru/dictionary/">API Yandex.Dictionary</a></string>
-
     <string name="error_word_not_found">Translate "%s" not found</string>
     <string name="error_server">Server error</string>
+
+    <string name="message_incorrect_word">Incorrect word</string>
+    <string name="message_you_are_logged">You are logged</string>
+    <string name="message_you_logged_out">You are logged out</string>
+    <string name="message_you_are_registered">You are registered</string>
+    <string name="message_word_used">Word is already used</string>
+    <string name="message_word_not_found">Word is not found</string>
+    <string name="message_word_not_contain">Word does not contain added letter</string>
+    <string name="message_select_letter">Select letter</string>
+    <string name="message_invalid_login">Invalid name or password</string>
+    <string name="message_invalid_name">Invalid name</string>
+    <string name="message_invalid_password">Invalid password</string>
+    <string name="message_user_exist">User exist</string>
+    <string name="message_passwords_equivalent">Passwords must be equivalent</string>
+    <string name="message_record_saved">Record is saved</string>
+
     <string name="label_complexity">Complexity</string>
     <string name="label_lang">Language</string>
     <string name="label_name">Name</string>
@@ -31,6 +45,8 @@
     <string name="label_registration">Registration</string>
     <string name="label_cancel">Cancel</string>
     <string name="label_ok">Ok</string>
+    <string name="label_yandex"><a href="http://api.yandex.ru/dictionary/">API Yandex.Dictionary</a></string>
+    <string name="label_quit">Are you sure you want to quit?</string>
 
     <string name="title_activity_login">Login</string>
     <string name="title_activity_start">Balda RUS ENG</string>
@@ -39,6 +55,8 @@
     <string name="title_activity_registration">Registration</string>
     <string name="title_activity_records">Records</string>
     <string name="title_activity_my_records">My records</string>
+    <string name="title_dialog_quit">Quit</string>
+
     <string-array name="languages">
         <item>Russian</item>
         <item>English</item>
