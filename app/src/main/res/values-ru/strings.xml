@@ -44,4 +44,20 @@
     <string name="label_login">Логин</string>
     <string name="label_ok">ОК</string>
     <string name="label_registration">Регистрация</string>
+    <string name="label_quit">Вы уверены, что хотите закончить игру?</string>
+    <string name="message_invalid_login">Неверное имя пользователя или пароль</string>
+    <string name="message_invalid_name">Имя должно состоять из букв A-z и цифр 0-9</string>
+    <string name="message_invalid_password">Пароль должен быть длиннее трех символов</string>
+    <string name="message_passwords_equivalent">Пароли должны совпадать</string>
+    <string name="message_record_saved">Рекорд сохранен</string>
+    <string name="message_incorrect_word">Некорректное слово</string>
+    <string name="message_select_letter">Выберете букву</string>
+    <string name="message_user_exist">Пользователь с таким именем уже существует</string>
+    <string name="title_dialog_quit">Выход</string>
+    <string name="message_you_logged_out">Выход выполнен</string>
+    <string name="message_you_are_registered">Вы зарегистрированы</string>
+    <string name="message_you_are_logged">Вход выполнен</string>
+    <string name="message_word_used">Слово уже использовано</string>
+    <string name="message_word_not_found">Слово не найдено</string>
+    <string name="message_word_not_contain">Слово должно содержать добавленную букву</string>
 </resources>

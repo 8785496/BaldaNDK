@@ -188,42 +188,89 @@ public class ResultActivity extends FragmentActivity
         }
     }
 
-    private class RegAnonymousTask extends AsyncTask<String, Void, JSONObject> {
+    private class RegAnonymousTask extends AsyncTask<String, Void, String> {
         @Override
-        protected JSONObject doInBackground(String... params) {
-            // anonymous username and pass
-            JSONObject jsonUser = registerAnonymous();
-            String username = "";
-            String password = "";
+        protected String doInBackground(String... params) {
+            String jsonString = "";
+            HttpURLConnection urlConnection = null;
+            int score = intent.getIntExtra("scorePlayer", 0);
             try {
-                if (jsonUser.has("code") && jsonUser.getInt("code") == 1) {
-                    JSONObject user = jsonUser.getJSONObject("user");
-                    username = user.getString("username");
-                    password = user.getString("password");
+                URL url = new URL("http://chernyshov.hol.es/record/anonymous");
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setReadTimeout(10000);
+                urlConnection.setConnectTimeout(15000);
+                urlConnection.setRequestMethod("POST");
+                OutputStream outputStream = urlConnection.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                JSONObject data = new JSONObject();
+                data.put("score", score);
+                Log.d("BaldaNDK", data.toString());
+                writer.write(data.toString());
+                writer.flush();
+                writer.close();
+                outputStream.close();
+                urlConnection.connect();
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line);
                 }
+                jsonString = buffer.toString();
             } catch (JSONException e) {
                 e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                urlConnection.disconnect();
             }
-            SharedPreferences.Editor editor = myPreferences.edit();
-            editor.putString("username", username);
-            editor.putString("password", password);
-            editor.apply();
-            // save record
-            int score = intent.getIntExtra("scorePlayer", 0);
-            JSONObject jsonRecord = sendRecord(score, username, password);
-            return jsonRecord;
+            return jsonString;
+
+//            // anonymous username and pass
+//            JSONObject jsonUser = registerAnonymous();
+//            String username = "";
+//            String password = "";
+//            try {
+//                if (jsonUser.has("code") && jsonUser.getInt("code") == 1) {
+//                    JSONObject user = jsonUser.getJSONObject("user");
+//                    username = user.getString("username");
+//                    password = user.getString("password");
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            SharedPreferences.Editor editor = myPreferences.edit();
+//            editor.putString("username", username);
+//            editor.putString("password", password);
+//            editor.apply();
+//            // save record
+//            int score = intent.getIntExtra("scorePlayer", 0);
+//            JSONObject jsonRecord = sendRecord(score, username, password);
+//            return jsonRecord;
         }
 
         @Override
-        protected void onPostExecute(JSONObject data) {
-            super.onPostExecute(data);
-            //Log.d("BaldaNDK", strJson);
+        protected void onPostExecute(String strJson) {
+            super.onPostExecute(strJson);
+            Log.d("BaldaNDK", strJson);
+            if (strJson.equals("")) {
+                notification(R.string.error_server);
+                return;
+            }
             try {
-                //JSONObject data = new JSONObject(strJson);
+                JSONObject data = new JSONObject(strJson);
+                JSONObject user = data.getJSONObject("user");
+                username = user.getString("username");
+                password = user.getString("password");
+                SharedPreferences.Editor editor = myPreferences.edit();
+                editor.putString("username", username);
+                editor.putString("password", password);
+                editor.apply();
+
                 if (data.has("code") && data.getInt("code") == 1) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ResultActivity.this);
-                    builder.setTitle("Сообщение")
-                            .setMessage("Ваш рекорд успешно сохранен")
+                    builder.setMessage(R.string.message_record_saved)
                             .setCancelable(false)
                             .setNegativeButton("Ok",
                                     new DialogInterface.OnClickListener() {
