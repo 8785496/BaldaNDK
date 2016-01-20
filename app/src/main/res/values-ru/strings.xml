@@ -60,4 +60,5 @@
     <string name="message_word_used">Слово уже использовано</string>
     <string name="message_word_not_found">Слово не найдено</string>
     <string name="message_word_not_contain">Слово должно содержать добавленную букву</string>
+    <string name="message_record_less">Ваш рекорд %d</string>
 </resources>

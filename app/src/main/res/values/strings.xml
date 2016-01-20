@@ -32,6 +32,7 @@
     <string name="message_user_exist">User exist</string>
     <string name="message_passwords_equivalent">Passwords must be equivalent</string>
     <string name="message_record_saved">Record is saved</string>
+    <string name="message_record_less">Your record is %d</string>
 
     <string name="label_complexity">Complexity</string>
     <string name="label_lang">Language</string>

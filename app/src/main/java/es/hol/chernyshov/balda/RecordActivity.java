@@ -3,6 +3,7 @@ package es.hol.chernyshov.balda;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,11 +50,11 @@ public class RecordActivity extends Activity {
         new GetRecordsTask().execute();
     }
 
-    private class GetRecordsTask extends AsyncTask<Void, Void, JSONArray> {
+    private class GetRecordsTask extends AsyncTask<Void, Void, String> {
         @Override
-        protected JSONArray doInBackground(Void... params) {
+        protected String doInBackground(Void... params) {
             HttpURLConnection urlConnection = null;
-            JSONArray jsonRecords = null;
+            String resultJson = "";
             try {
                 URL url = new URL("http://chernyshov.hol.es/record");
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -67,24 +69,26 @@ public class RecordActivity extends Activity {
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line);
                 }
-                String resultJson = buffer.toString();
-                jsonRecords = new JSONArray(resultJson);
+                resultJson = buffer.toString();
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
                 e.printStackTrace();
             } finally {
                 urlConnection.disconnect();
             }
-            return jsonRecords;
+            return resultJson;
         }
 
         @Override
-        protected void onPostExecute(JSONArray data) {
-            super.onPostExecute(data);
+        protected void onPostExecute(String strJson) {
+            super.onPostExecute(strJson);
+            if (strJson.equals("")) {
+                notification(R.string.error_server);
+                return;
+            }
             try {
-                for (int i = 0; i < data.length(); i++) {
-                    JSONObject record = data.getJSONObject(i);
+                JSONArray jsonRecords = new JSONArray(strJson);
+                for (int i = 0; i < jsonRecords.length(); i++) {
+                    JSONObject record = jsonRecords.getJSONObject(i);
                     Log.d("BaldaNDK", record.toString());
 
                     TextView textUser = new TextView(getApplicationContext());
@@ -105,5 +109,13 @@ public class RecordActivity extends Activity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void notification(int stringId) {
+        String text = getResources().getString(stringId);
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 }

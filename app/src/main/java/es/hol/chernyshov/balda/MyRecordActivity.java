@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,11 +54,11 @@ public class MyRecordActivity extends Activity {
         }
     }
 
-    private class GetRecordsTask extends AsyncTask<String, Void, JSONArray> {
+    private class GetRecordsTask extends AsyncTask<String, Void, String> {
         @Override
-        protected JSONArray doInBackground(String... params) {
+        protected String doInBackground(String... params) {
             HttpURLConnection urlConnection = null;
-            JSONArray jsonRecords = null;
+            String resultJson = "";
             try {
                 URL url = new URL("http://chernyshov.hol.es/record/" + params[0]);
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -72,24 +73,26 @@ public class MyRecordActivity extends Activity {
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line);
                 }
-                String resultJson = buffer.toString();
-                jsonRecords = new JSONArray(resultJson);
+                resultJson = buffer.toString();
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
                 e.printStackTrace();
             } finally {
                 urlConnection.disconnect();
             }
-            return jsonRecords;
+            return resultJson;
         }
 
         @Override
-        protected void onPostExecute(JSONArray data) {
-            super.onPostExecute(data);
+        protected void onPostExecute(String strJson) {
+            super.onPostExecute(strJson);
+            if (strJson.equals("")) {
+                notification(R.string.error_server);
+                return;
+            }
             try {
-                for (int i = 0; i < data.length(); i++) {
-                    JSONObject record = data.getJSONObject(i);
+                JSONArray jsonRecords = new JSONArray(strJson);
+                for (int i = 0; i < jsonRecords.length(); i++) {
+                    JSONObject record = jsonRecords.getJSONObject(i);
                     Log.d("BaldaNDK", record.toString());
 
                     TextView textUser = new TextView(getApplicationContext());
@@ -110,5 +113,13 @@ public class MyRecordActivity extends Activity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void notification(int stringId) {
+        String text = getResources().getString(stringId);
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 }

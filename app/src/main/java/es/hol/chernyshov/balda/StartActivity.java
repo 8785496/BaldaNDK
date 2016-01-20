@@ -167,6 +167,7 @@ public class StartActivity extends FragmentActivity
         SharedPreferences.Editor editor = myPreferences.edit();
         editor.remove("username");
         editor.remove("password");
+        editor.remove("score");
         editor.apply();
 
         init();
@@ -185,13 +186,13 @@ public class StartActivity extends FragmentActivity
     }
 
     private class UserAuthTask extends AsyncTask<String, Void, String> {
-        String resultJson = "";
-
         @Override
         protected String doInBackground(String... params) {
+            HttpURLConnection urlConnection = null;
+            String resultJson = "";
             try {
                 URL url = new URL("http://chernyshov.hol.es/user/exist");
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setReadTimeout(10000);
                 urlConnection.setConnectTimeout(15000);
                 urlConnection.setRequestMethod("POST");
@@ -214,8 +215,12 @@ public class StartActivity extends FragmentActivity
                     buffer.append(line);
                 }
                 resultJson = buffer.toString();
-            } catch (Exception e) {
+            } catch (IOException e) {
                 e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } finally {
+                urlConnection.disconnect();
             }
             return resultJson;
         }
@@ -223,7 +228,7 @@ public class StartActivity extends FragmentActivity
         @Override
         protected void onPostExecute(String strJson) {
             super.onPostExecute(strJson);
-            if (strJson == "") {
+            if (strJson.equals("")) {
                 notification(R.string.error_server);
                 return;
             }
@@ -251,7 +256,6 @@ public class StartActivity extends FragmentActivity
         @Override
         protected String doInBackground(String... params) {
             HttpURLConnection urlConnection = null;
-            //JSONArray jsonRecords = null;
             String resultJson = "";
             try {
                 URL url = new URL("http://chernyshov.hol.es/user");
@@ -291,7 +295,7 @@ public class StartActivity extends FragmentActivity
         @Override
         protected void onPostExecute(String data) {
             super.onPostExecute(data);
-            if (data == "") {
+            if (data.equals("")) {
                 notification(R.string.error_server);
                 return;
             }

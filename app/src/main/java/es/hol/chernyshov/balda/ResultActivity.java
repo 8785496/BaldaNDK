@@ -1,7 +1,5 @@
 package es.hol.chernyshov.balda;
 
-import android.app.Activity;
-//import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.app.AlertDialog;
@@ -27,11 +25,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
+        import java.net.HttpURLConnection;
+        import java.net.URL;
 import java.util.regex.Pattern;
 
 public class ResultActivity extends FragmentActivity
@@ -42,9 +37,7 @@ public class ResultActivity extends FragmentActivity
     private Intent intent;
     private int scorePlayer;
     private int scoreAndroid;
-    boolean isHelp;
-    String username;
-    String password;
+    private boolean isHelp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +55,11 @@ public class ResultActivity extends FragmentActivity
 
     private void init() {
         boolean isAuth = myPreferences.contains("username");
-        username = myPreferences.getString("username", "Player");
-        password = myPreferences.getString("password", "");
+        String username = myPreferences.getString("username", "Player");
+        //password = myPreferences.getString("password", "");
+        int score = myPreferences.getInt("score", 0);
 
-        if (isHelp || (scorePlayer <= scoreAndroid)) {
+        if (isHelp || (scorePlayer <= scoreAndroid) || (scorePlayer <= score)) {
             setContentView(R.layout.activity_result_not_save);
         } else if (isAuth) {
             setContentView(R.layout.activity_result_auth);
@@ -90,7 +84,7 @@ public class ResultActivity extends FragmentActivity
     }
 
     public void registrationAnonymous(View view) {
-        new RegAnonymousTask().execute();
+        new SaveAnonymousTask().execute();
     }
 
     public void login(View view) {
@@ -124,13 +118,14 @@ public class ResultActivity extends FragmentActivity
     }
 
     private class SaveRecordTask extends AsyncTask<String, Void, String> {
-        String resultJson = "";
-
         @Override
         protected String doInBackground(String... params) {
+            String resultJson = "";
+            HttpURLConnection urlConnection = null;
+            int score = intent.getIntExtra("scorePlayer", 0);
             try {
                 URL url = new URL("http://chernyshov.hol.es/record");
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setReadTimeout(10000);
                 urlConnection.setConnectTimeout(15000);
                 urlConnection.setRequestMethod("POST");
@@ -140,7 +135,7 @@ public class ResultActivity extends FragmentActivity
                 JSONObject user = new JSONObject();
                 user.put("username", params[0]);
                 user.put("password", params[1]);
-                data.put("score", new Integer(intent.getIntExtra("scorePlayer", 0)));
+                data.put("score", score);
                 data.put("user", user);
                 Log.d("BaldaNDK", data.toString());
                 writer.write(data.toString());
@@ -156,8 +151,12 @@ public class ResultActivity extends FragmentActivity
                     buffer.append(line);
                 }
                 resultJson = buffer.toString();
-            } catch (Exception e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                urlConnection.disconnect();
             }
             return resultJson;
         }
@@ -166,13 +165,40 @@ public class ResultActivity extends FragmentActivity
         protected void onPostExecute(String strJson) {
             super.onPostExecute(strJson);
             Log.d("BaldaNDK", strJson);
+            if (strJson.equals("")) {
+                notification(R.string.error_server);
+                return;
+            }
             try {
                 JSONObject data = new JSONObject(strJson);
-                if (data.has("code") && data.getInt("code") == 1) {
+                SharedPreferences.Editor editor = myPreferences.edit();
+                JSONObject record;
+                String message = "";
+                int score;
+                if (data.has("code")) {
+                    switch (data.getInt("code")) {
+                        case 1:
+                            record = data.getJSONObject("record");
+                            score = record.getInt("score");
+                            message = getResources().getString(R.string.message_record_saved);
+                            break;
+                        case 2:
+                            score = data.getInt("score");
+                            String format = getResources().getString(R.string.message_record_less);
+                            message = String.format(format, score);
+                            break;
+                        default:
+                            notification(R.string.error_server);
+                            return;
+                    }
+
+                    editor.putInt("score", score);
+                    editor.apply();
+
                     AlertDialog.Builder builder = new AlertDialog.Builder(ResultActivity.this);
-                    builder.setMessage(R.string.message_record_saved)
+                    builder.setMessage(message)
                             .setCancelable(false)
-                            .setNegativeButton(R.string.label_ok,
+                            .setPositiveButton(R.string.label_ok,
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             dialog.cancel();
@@ -181,6 +207,9 @@ public class ResultActivity extends FragmentActivity
                                     });
                     AlertDialog alert = builder.create();
                     alert.show();
+                } else {
+                    notification(R.string.error_server);
+                    return;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -188,7 +217,7 @@ public class ResultActivity extends FragmentActivity
         }
     }
 
-    private class RegAnonymousTask extends AsyncTask<String, Void, String> {
+    private class SaveAnonymousTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
             String jsonString = "";
@@ -226,28 +255,6 @@ public class ResultActivity extends FragmentActivity
                 urlConnection.disconnect();
             }
             return jsonString;
-
-//            // anonymous username and pass
-//            JSONObject jsonUser = registerAnonymous();
-//            String username = "";
-//            String password = "";
-//            try {
-//                if (jsonUser.has("code") && jsonUser.getInt("code") == 1) {
-//                    JSONObject user = jsonUser.getJSONObject("user");
-//                    username = user.getString("username");
-//                    password = user.getString("password");
-//                }
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//            SharedPreferences.Editor editor = myPreferences.edit();
-//            editor.putString("username", username);
-//            editor.putString("password", password);
-//            editor.apply();
-//            // save record
-//            int score = intent.getIntExtra("scorePlayer", 0);
-//            JSONObject jsonRecord = sendRecord(score, username, password);
-//            return jsonRecord;
         }
 
         @Override
@@ -260,15 +267,19 @@ public class ResultActivity extends FragmentActivity
             }
             try {
                 JSONObject data = new JSONObject(strJson);
-                JSONObject user = data.getJSONObject("user");
-                username = user.getString("username");
-                password = user.getString("password");
-                SharedPreferences.Editor editor = myPreferences.edit();
-                editor.putString("username", username);
-                editor.putString("password", password);
-                editor.apply();
-
                 if (data.has("code") && data.getInt("code") == 1) {
+                    JSONObject record = data.getJSONObject("record");
+                    int score = record.getInt("score");
+                    JSONObject user = data.getJSONObject("user");
+                    String username = user.getString("username");
+                    String password = user.getString("password");
+
+                    SharedPreferences.Editor editor = myPreferences.edit();
+                    editor.putString("username", username);
+                    editor.putString("password", password);
+                    editor.putInt("score", score);
+                    editor.apply();
+
                     AlertDialog.Builder builder = new AlertDialog.Builder(ResultActivity.this);
                     builder.setMessage(R.string.message_record_saved)
                             .setCancelable(false)
@@ -281,6 +292,8 @@ public class ResultActivity extends FragmentActivity
                                     });
                     AlertDialog alert = builder.create();
                     alert.show();
+                } else {
+                    notification(R.string.error_server);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -288,89 +301,14 @@ public class ResultActivity extends FragmentActivity
         }
     }
 
-    private JSONObject sendRecord(int score, String username, String password) {
-        String jsonString = "";
-        HttpURLConnection urlConnection = null;
-        JSONObject jsonRecord = null;
-        try {
-            URL url = new URL("http://chernyshov.hol.es/record");
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
-            urlConnection.setRequestMethod("POST");
-            OutputStream outputStream = urlConnection.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-            JSONObject data = new JSONObject();
-            JSONObject user = new JSONObject();
-            user.put("username", username);
-            user.put("password", password);
-            data.put("score", score);
-            data.put("user", user);
-            Log.d("BaldaNDK", data.toString());
-            writer.write(data.toString());
-            writer.flush();
-            writer.close();
-            outputStream.close();
-            urlConnection.connect();
-            InputStream inputStream = urlConnection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line);
-            }
-            jsonString = buffer.toString();
-            Log.d("BaldaNDK", jsonString);
-            jsonRecord = new JSONObject(jsonString);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            urlConnection.disconnect();
-        }
-        return jsonRecord;
-    }
-
-    private JSONObject registerAnonymous() {
-        String resultJson = "";
-        HttpURLConnection urlConnection = null;
-        JSONObject data = null;
-        try {
-            URL url = new URL("http://chernyshov.hol.es/user/anonymous");
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
-            urlConnection.setRequestMethod("POST");
-            urlConnection.connect();
-            InputStream inputStream = urlConnection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line);
-            }
-            resultJson = buffer.toString();
-            Log.d("BaldaNDK", resultJson);
-            data = new JSONObject(resultJson);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } finally {
-            urlConnection.disconnect();
-        }
-        return data;
-    }
-
     private class UserAuthTask extends AsyncTask<String, Void, String> {
-        String resultJson = "";
-
         @Override
         protected String doInBackground(String... params) {
+            HttpURLConnection urlConnection = null;
+            String resultJson = "";
             try {
                 URL url = new URL("http://chernyshov.hol.es/user/exist");
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setReadTimeout(10000);
                 urlConnection.setConnectTimeout(15000);
                 urlConnection.setRequestMethod("POST");
@@ -393,8 +331,12 @@ public class ResultActivity extends FragmentActivity
                     buffer.append(line);
                 }
                 resultJson = buffer.toString();
-            } catch (Exception e) {
+            } catch (IOException e) {
                 e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } finally {
+                urlConnection.disconnect();
             }
             return resultJson;
         }
@@ -403,24 +345,23 @@ public class ResultActivity extends FragmentActivity
         protected void onPostExecute(String strJson) {
             super.onPostExecute(strJson);
             Log.d("BaldaNDK", strJson);
+            if (strJson.equals("")) {
+                notification(R.string.error_server);
+                return;
+            }
             try {
                 JSONObject data = new JSONObject(strJson);
-                Context context = getApplicationContext();
-                int duration = Toast.LENGTH_SHORT;
-                CharSequence text;
                 if (data.has("code") && data.getInt("code") == 1) {
                     JSONObject user = data.getJSONObject("user");
                     SharedPreferences.Editor editor = myPreferences.edit();
                     editor.putString("username", user.getString("username"));
                     editor.putString("password", user.getString("password"));
                     editor.apply();
-                    text = "Вход выполнен";
+                    notification(R.string.message_you_are_logged);
                     init();
                 } else {
-                    text = "Не верный логин или пароль";
+                    notification(R.string.message_invalid_login);
                 }
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -431,7 +372,6 @@ public class ResultActivity extends FragmentActivity
         @Override
         protected String doInBackground(String... params) {
             HttpURLConnection urlConnection = null;
-            //JSONArray jsonRecords = null;
             String resultJson = "";
             try {
                 URL url = new URL("http://chernyshov.hol.es/user");
@@ -442,7 +382,6 @@ public class ResultActivity extends FragmentActivity
                 OutputStream outputStream = urlConnection.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 JSONObject data = new JSONObject();
-                JSONObject user = new JSONObject();
                 data.put("username", params[0]);
                 data.put("password", params[1]);
                 Log.d("BaldaNDK", data.toString());
@@ -472,7 +411,7 @@ public class ResultActivity extends FragmentActivity
         @Override
         protected void onPostExecute(String data) {
             super.onPostExecute(data);
-            if (data == "") {
+            if (data.equals("")) {
                 notification(R.string.error_server);
                 return;
             }
@@ -496,13 +435,6 @@ public class ResultActivity extends FragmentActivity
 
     private void notification(int stringId) {
         String text = getResources().getString(stringId);
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-    }
-
-    private void notification(String text) {
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
