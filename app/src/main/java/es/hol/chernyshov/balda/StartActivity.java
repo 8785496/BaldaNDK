@@ -38,8 +38,6 @@ public class StartActivity extends FragmentActivity
     private Spinner spinnerLang;
     private RadioButton radioButtonRandomWord;
     private SharedPreferences myPreferences;
-    private String username;
-    private String password;
     private String startWord;
     private boolean isAuth;
 
@@ -51,11 +49,16 @@ public class StartActivity extends FragmentActivity
         init();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!isAuth &&  myPreferences.contains("username")) {
+            init();
+        }
+    }
+
     private void init() {
         isAuth = myPreferences.contains("username");
-        username = myPreferences.getString("username", "Player");
-        password = myPreferences.getString("password", "");
-
 
         if (isAuth) {
             setContentView(R.layout.activity_start_auth);

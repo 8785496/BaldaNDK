@@ -84,13 +84,13 @@ public class MainActivity extends Activity {
 
         wordsAll.add(startWord);
 
-        space = new byte[/*25*/] {
+        space = new byte[25] /*{
                 2, 1, 12, 5, 1,
                 2, 1, 12, 5, 1,
                 2, 1, 12, 5, 1,
                 2, 1, 12, 5, 1,
                 2, 1, 12, 5, 0
-        };
+        }*/;
         for (int i = 0; i < 5; i++) {
             space[i + 10] = (byte) chars.indexOf(startWord.charAt(i));
         }
@@ -437,6 +437,7 @@ public class MainActivity extends Activity {
                 trackInit(complexity);
                 trackIter();
                 getWord();
+                coordinates.clear();
                 if (endGame()) {
                     Intent intent = new Intent(MainActivity.this, ResultActivity.class);
                     intent.putExtra("scorePlayer", getScorePlayer());
@@ -445,6 +446,7 @@ public class MainActivity extends Activity {
                     startActivity(intent);
                     finish();
                 }
+                //refresh();
             } else {
                 notification(R.string.message_word_not_found);
             }
@@ -522,5 +524,6 @@ public class MainActivity extends Activity {
 
     public void openMenu(View view) {
         openOptionsMenu();
+        refresh();
     }
 }
