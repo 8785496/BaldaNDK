@@ -128,7 +128,17 @@ public class StartActivity extends FragmentActivity
 
     @Override
     public void onRegistrationDialogPositiveClick(DialogFragment dialog, String username, String password, String repeatPassword) {
-        new RegistrationTask().execute(username, password);
+        Pattern p = Pattern.compile("^[A-Za-z0-9]{3,10}$");
+
+        if (!p.matcher(username).matches()) {
+            notification(R.string.message_invalid_name);
+        } else if (password.length() < 3) {
+            notification(R.string.message_invalid_password);
+        } else if (!password.equals(repeatPassword)) {
+            notification(R.string.message_passwords_equivalent);
+        } else {
+            new RegistrationTask().execute(username, password);
+        }
     }
 
     @Override
